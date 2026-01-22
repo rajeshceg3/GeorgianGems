@@ -1,14 +1,34 @@
 :root {
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display: 'Playfair Display', serif;
     --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    --color-bg: #f5f5f7;
+    --color-surface: rgba(255, 255, 255, 0.85);
+    --color-surface-solid: #ffffff;
+    --color-text-primary: #1d1d1f;
+    --color-text-secondary: #86868b;
+    --color-accent: #bf4040; /* A Georgian red wine color */
+    --color-accent-glow: rgba(191, 64, 64, 0.4);
+
+    --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-md: 0 12px 32px rgba(0,0,0,0.12);
+    --shadow-lg: 0 24px 48px rgba(0,0,0,0.18);
+
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
 }
 
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 100%;
+    font-family: var(--font-primary);
     overflow: hidden;
-    background-color: #f5f5f7;
+    background-color: var(--color-bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -16,67 +36,104 @@ body, html {
 #map {
     height: 100%;
     width: 100%;
-    background-color: #e8e5e2;
+    background-color: #e5e5e5;
     z-index: 1;
 }
 
+/* --- Controls & UI Elements --- */
+
+/* Zoom Control Overrides if we enable them later */
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: var(--shadow-sm) !important;
+    border-radius: var(--radius-sm) !important;
+    overflow: hidden;
+}
+.leaflet-bar a {
+    background-color: var(--color-surface-solid) !important;
+    color: var(--color-text-primary) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+}
+.leaflet-bar a:last-child {
+    border-bottom: none !important;
+}
+.leaflet-bar a:hover {
+    background-color: #f9f9f9 !important;
+}
+
+/* --- Info Panel (Desktop Default) --- */
+
 #info-panel {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 45vh;
-    background-color: rgba(245, 245, 247, 0.85);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    transform: translateY(100%);
+    top: 24px;
+    left: 24px;
+    bottom: 24px;
+    width: 420px;
+    background-color: var(--color-surface);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    transform: translateX(-120%);
     transition: transform 0.6s var(--ease-out-cubic);
     will-change: transform;
-    box-shadow: 0 -10px 50px rgba(0,0,0,0.15);
-    z-index: 1000;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 #info-panel.visible {
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
 #close-btn {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(0,0,0,0.08);
-    color: #555;
+    background: rgba(230, 230, 230, 0.4);
+    color: var(--color-text-primary);
     border: none;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 22px;
-    line-height: 30px;
-    text-align: center;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-    z-index: 2;
+    transition: all 0.2s ease;
+    z-index: 10;
+    backdrop-filter: blur(10px);
 }
 
 #close-btn:hover {
-    background-color: rgba(0,0,0,0.12);
-    color: #000;
+    background: rgba(230, 230, 230, 0.8);
+    transform: rotate(90deg);
 }
 
 #info-content {
-    display: flex;
-    align-items: center;
+    height: 100%;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-    box-sizing: border-box;
+    overflow-y: auto;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
     transition: opacity 0.4s 0.2s, transform 0.4s 0.2s var(--ease-out-cubic);
+    /* Scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
+}
+
+#info-content::-webkit-scrollbar {
+    width: 6px;
+}
+#info-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+#info-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
 }
 
 #info-panel.visible #info-content {
@@ -84,77 +141,159 @@ body, html {
     transform: translateY(0);
 }
 
-#info-content .image-container {
-    flex: 0 0 40%;
-    height: calc(45vh - 80px);
-    margin-right: 40px;
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
 }
 
 #info-content img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.8s var(--ease-out-cubic);
 }
 
-#info-content .text-container {
-    flex: 1;
+/* Subtle zoom effect on image when panel opens */
+#info-panel.visible #info-content img {
+    transform: scale(1.05);
+}
+
+.text-container {
+    padding: 32px;
 }
 
 #info-content h2 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin: 0 0 15px 0;
-    color: #1d1d1f;
-    letter-spacing: .003em;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
 }
 
 #info-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #555;
+    font-family: var(--font-primary);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
     margin: 0;
 }
 
-.custom-marker {
-    width: 24px !important;
-    height: 24px !important;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: transform 0.2s;
-}
-
-.custom-marker::before {
+/* Decorative element */
+.text-container::after {
     content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background-color: var(--color-accent);
+    margin-top: 24px;
+    border-radius: 2px;
+}
+
+/* --- Custom Markers --- */
+
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.marker-pin {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50% 50% 0;
+    background: var(--color-surface-solid);
     position: absolute;
-    top: 50%;
+    transform: rotate(-45deg);
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background-color: #007aff;
+    top: 50%;
+    margin: -20px 0 0 -20px;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease-out-cubic);
+}
+
+.marker-img {
+    width: 34px;
+    height: 34px;
+    margin: 3px 0 0 3px; /* Center inside the 40px pin */
     border-radius: 50%;
+    background-color: var(--color-accent);
+    background-size: cover;
+    background-position: center;
+    transform: rotate(45deg); /* counteract rotation of parent */
+    border: 2px solid white;
+    box-sizing: border-box;
 }
 
-.custom-marker:hover {
-    transform: scale(1.1);
+/* The actual pulsing dot */
+.marker-dot {
+    display: none; /* Hiding the old dot style */
 }
 
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.5);
-    }
-    70% {
-        box-shadow: 0 0 0 20px rgba(0, 122, 255, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 122, 255, 0);
-    }
+/* Interaction */
+.custom-marker:hover .marker-pin {
+    transform: rotate(-45deg) scale(1.15) translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
 }
 
-.custom-marker.selected {
-    animation: pulse 1.5s infinite;
+.custom-marker.selected .marker-pin {
+    background-color: var(--color-text-primary);
+    transform: rotate(-45deg) scale(1.2) translateY(-8px);
+}
+
+.custom-marker.selected .marker-pin::after {
+    background-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-accent-glow);
+}
+
+/* --- Mobile Responsiveness --- */
+
+@media (max-width: 768px) {
+    #info-panel {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 70vh; /* Taller sheet */
+        border-radius: 24px 24px 0 0;
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        transform: translateY(105%); /* Slide up from bottom */
+    }
+
+    #info-panel.visible {
+        transform: translateY(0);
+    }
+
+    .image-container {
+        height: 240px;
+    }
+
+    #close-btn {
+        top: 16px;
+        right: 16px;
+        background: rgba(255, 255, 255, 0.6);
+        color: #000;
+    }
+
+    #info-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .text-container {
+        padding: 24px;
+        padding-bottom: 80px; /* Safe area for scrolling */
+    }
 }
