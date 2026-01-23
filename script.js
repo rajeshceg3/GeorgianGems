@@ -141,8 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePanel = () => {
         infoPanel.classList.remove('visible');
         markers.forEach(m => m.getElement().classList.remove('selected'));
-        // Optional: zoom out slightly or reset view?
-        // Let's not force a zoom out, it might be annoying if the user just wants to close the panel.
+
+        const isMobile = window.innerWidth < 768;
+        const targetZoom = isMobile ? 6 : 7;
+        map.flyTo(initialCenter, targetZoom);
     };
 
     closeBtn.addEventListener('click', (e) => {
