@@ -5,16 +5,16 @@
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
     --color-bg: #f5f5f7;
-    --color-surface: rgba(255, 255, 255, 0.85);
+    --color-surface: rgba(255, 255, 255, 0.75);
     --color-surface-solid: #ffffff;
     --color-text-primary: #1d1d1f;
-    --color-text-secondary: #86868b;
-    --color-accent: #bf4040; /* A Georgian red wine color */
-    --color-accent-glow: rgba(191, 64, 64, 0.4);
+    --color-text-secondary: #6e6e73;
+    --color-accent: #bf4040;
+    --color-accent-glow: rgba(191, 64, 64, 0.5);
 
-    --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
-    --shadow-md: 0 12px 32px rgba(0,0,0,0.12);
-    --shadow-lg: 0 24px 48px rgba(0,0,0,0.18);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 32px 64px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
 
     --radius-lg: 24px;
     --radius-md: 16px;
@@ -65,27 +65,33 @@ body, html {
 
 #info-panel {
     position: fixed;
-    top: 24px;
-    left: 24px;
-    bottom: 24px;
-    width: 420px;
+    top: 32px;
+    left: 32px;
+    bottom: 32px;
+    width: 440px;
     background-color: var(--color-surface);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 1000;
-    transform: translateX(-120%);
-    transition: transform 0.6s var(--ease-out-cubic);
+    transform: translateX(-120%) scale(0.98);
+    transition: transform 0.8s var(--ease-out-cubic), opacity 0.6s ease;
     will-change: transform;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    opacity: 0;
 }
 
 #info-panel.visible {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
+    opacity: 1;
+}
+
+.sheet-handle {
+    display: none;
 }
 
 #close-btn {
@@ -171,20 +177,35 @@ body, html {
 
 #info-content h2 {
     font-family: var(--font-display);
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    margin: 0 0 16px 0;
+    margin: 0 0 20px 0;
     color: var(--color-text-primary);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s var(--ease-out-cubic) forwards 0.2s;
 }
 
 #info-content p {
     font-family: var(--font-primary);
-    font-size: 1.05rem;
-    line-height: 1.65;
+    font-size: 1.0625rem;
+    line-height: 1.6;
     color: var(--color-text-secondary);
     margin: 0;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s var(--ease-out-cubic) forwards 0.3s;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Decorative element */
@@ -250,11 +271,32 @@ body, html {
 .custom-marker.selected .marker-pin {
     background-color: var(--color-text-primary);
     transform: rotate(-45deg) scale(1.2) translateY(-8px);
+    animation: markerPulse 2s infinite;
 }
 
 .custom-marker.selected .marker-pin::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 50% 50% 50% 0;
     background-color: var(--color-accent);
+    z-index: -1;
     box-shadow: 0 0 20px var(--color-accent-glow);
+}
+
+@keyframes markerPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(29, 29, 31, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(29, 29, 31, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(29, 29, 31, 0);
+    }
 }
 
 /* --- Mobile Responsiveness --- */
@@ -266,15 +308,30 @@ body, html {
         right: 0;
         bottom: 0;
         width: 100%;
-        height: 70vh; /* Taller sheet */
-        border-radius: 24px 24px 0 0;
+        height: 70vh;
+        border-radius: 28px 28px 0 0;
         border: none;
-        border-top: 1px solid rgba(255,255,255,0.2);
-        transform: translateY(105%); /* Slide up from bottom */
+        border-top: 1px solid rgba(255,255,255,0.4);
+        transform: translateY(105%);
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+        padding-top: 20px; /* Space for handle */
     }
 
     #info-panel.visible {
         transform: translateY(0);
+    }
+
+    .sheet-handle {
+        display: block;
+        width: 36px;
+        height: 4px;
+        background-color: rgba(60, 60, 67, 0.3); /* iOS styled handle */
+        border-radius: 2px;
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
     }
 
     .image-container {
@@ -284,16 +341,20 @@ body, html {
     #close-btn {
         top: 16px;
         right: 16px;
-        background: rgba(255, 255, 255, 0.6);
-        color: #000;
+        width: 32px;
+        height: 32px;
+        background: rgba(235, 235, 240, 0.6);
+        color: #1d1d1f;
+        box-shadow: none;
     }
 
     #info-content h2 {
-        font-size: 1.8rem;
+        font-size: 2rem;
+        margin-bottom: 12px;
     }
 
     .text-container {
         padding: 24px;
-        padding-bottom: 80px; /* Safe area for scrolling */
+        padding-bottom: 100px;
     }
 }
