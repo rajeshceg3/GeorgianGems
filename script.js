@@ -60,6 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const markers = [];
 
+    const flyToOffset = (latlng, zoom, offsetX, offsetY) => {
+        const targetPoint = map.project(latlng, zoom).subtract([offsetX, offsetY]);
+        const targetLatLng = map.unproject(targetPoint, zoom);
+        map.flyTo(targetLatLng, zoom, {
+            animate: true,
+            duration: 1.2,
+            easeLinearity: 0.25
+        });
+    };
+
     const getResizedImage = (url, width) => {
         if (url.includes('images.unsplash.com')) {
             return url.replace(/w=\d+/, `w=${width}`);
@@ -86,20 +96,24 @@ document.addEventListener('DOMContentLoaded', () => {
         markers.push(marker);
 
         marker.on('click', (e) => {
-            // Smart offset for desktop view
-            let targetCoords = site.coords;
-            const currentZoom = map.getZoom();
-            const targetZoom = Math.max(currentZoom, 10); // Don't zoom in too much if already there, but at least 10
+            const isMobile = window.innerWidth < 768;
+            let targetZoom = 13;
+            let offsetX = 0;
+            let offsetY = 0;
 
-            // If desktop, we want to center the marker in the remaining space (right of the panel)
-            // But flyTo doesn't support pixel offset directly.
-            // We'll stick to simple centering for robustness, but maybe zoom in slightly more
+            if (isMobile) {
+                // Mobile: Panel height is ~70vh. We want marker in the top 30vh.
+                // Center of screen is 50vh. We want marker at ~15vh.
+                // OffsetY = 15vh - 50vh = -35vh.
+                offsetY = -1 * (window.innerHeight * 0.3);
+            } else {
+                // Desktop: Panel width is 440px.
+                // We want marker centered in the remaining space.
+                // OffsetX = 220px.
+                offsetX = 220;
+            }
 
-            map.flyTo(targetCoords, 13, {
-                animate: true,
-                duration: 1.5,
-                easeLinearity: 0.25
-            });
+            flyToOffset(site.coords, targetZoom, offsetX, offsetY);
 
             // Inject content with wrapper
             infoContent.innerHTML = `
