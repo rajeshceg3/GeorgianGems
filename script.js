@@ -87,9 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const customIcon = L.divIcon({
             className: 'custom-marker',
             html: `<div class='marker-pin'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
-            iconSize: [40, 40],
-            iconAnchor: [20, 42], // Tip of the pin
-            popupAnchor: [0, -45]
+            iconSize: [48, 48],
+            iconAnchor: [24, 24], // Center of the circular marker
+            popupAnchor: [0, -28]
         });
 
         const marker = L.marker(site.coords, { icon: customIcon }).addTo(map);
@@ -97,20 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         marker.on('click', (e) => {
             const isMobile = window.innerWidth < 768;
-            let targetZoom = 13;
+            let targetZoom = 14; // Slightly closer zoom
             let offsetX = 0;
             let offsetY = 0;
 
             if (isMobile) {
-                // Mobile: Panel height is ~70vh. We want marker in the top 30vh.
-                // Center of screen is 50vh. We want marker at ~15vh.
+                // Mobile: Panel height is ~75vh. We want marker in the top 25vh.
+                // We aim for the marker to be at ~15% from the top of the screen.
+                // Center of screen is 50%.
                 // OffsetY = 15vh - 50vh = -35vh.
-                offsetY = -1 * (window.innerHeight * 0.3);
+                offsetY = -1 * (window.innerHeight * 0.35);
             } else {
-                // Desktop: Panel width is 440px.
+                // Desktop: Panel width is 440px + 32px margin = 472px.
                 // We want marker centered in the remaining space.
-                // OffsetX = 220px.
-                offsetX = 220;
+                // OffsetX = (472 / 2) = 236px.
+                offsetX = 236;
             }
 
             flyToOffset(site.coords, targetZoom, offsetX, offsetY);
@@ -156,5 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     map.on('click', () => {
         closePanel();
+    });
+
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if (window.innerWidth !== lastWidth) {
+            lastWidth = window.innerWidth;
+            closePanel();
+        }
     });
 });
