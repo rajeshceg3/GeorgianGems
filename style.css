@@ -4,17 +4,17 @@
     --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
-    --color-bg: #f5f5f7;
-    --color-surface: rgba(255, 255, 255, 0.75);
+    --color-bg: #f2f2f4;
+    --color-surface: rgba(255, 255, 255, 0.82);
     --color-surface-solid: #ffffff;
-    --color-text-primary: #1d1d1f;
-    --color-text-secondary: #6e6e73;
-    --color-accent: #bf4040;
-    --color-accent-glow: rgba(191, 64, 64, 0.5);
+    --color-text-primary: #1a1a1c;
+    --color-text-secondary: #515156;
+    --color-accent: #c9302c;
+    --color-accent-glow: rgba(201, 48, 44, 0.4);
 
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-    --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
-    --shadow-lg: 0 32px 64px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 16px 32px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 48px 96px rgba(0, 0, 0, 0.14), 0 20px 40px rgba(0, 0, 0, 0.08);
 
     --radius-lg: 24px;
     --radius-md: 16px;
@@ -38,6 +38,10 @@ body, html {
     width: 100%;
     background-color: #e5e5e5;
     z-index: 1;
+}
+
+.leaflet-tile-pane {
+    filter: grayscale(0.2) contrast(1.05);
 }
 
 /* --- Controls & UI Elements --- */
@@ -70,13 +74,15 @@ body, html {
     bottom: 32px;
     width: 440px;
     background-color: var(--color-surface);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(60px) saturate(180%);
+    -webkit-backdrop-filter: blur(60px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
     z-index: 1000;
-    transform: translateX(-120%) scale(0.98);
+    transform: translateX(-120%) scale(0.96);
     transition: transform 0.8s var(--ease-out-cubic), opacity 0.6s ease;
     will-change: transform;
     display: flex;
@@ -177,24 +183,26 @@ body, html {
 
 #info-content h2 {
     font-family: var(--font-display);
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0 0 20px 0;
+    font-size: 2.75rem;
+    font-weight: 600;
+    margin: 0 0 24px 0;
     color: var(--color-text-primary);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
     opacity: 0;
-    animation: fadeSlideUp 0.8s var(--ease-out-cubic) forwards 0.2s;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.2s;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 #info-content p {
     font-family: var(--font-primary);
-    font-size: 1.0625rem;
-    line-height: 1.6;
+    font-size: 1.125rem;
+    line-height: 1.65;
+    font-weight: 400;
     color: var(--color-text-secondary);
     margin: 0;
     opacity: 0;
-    animation: fadeSlideUp 0.8s var(--ease-out-cubic) forwards 0.3s;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.3s;
 }
 
 @keyframes fadeSlideUp {
@@ -227,75 +235,75 @@ body, html {
 }
 
 .marker-pin {
-    width: 40px;
-    height: 40px;
-    border-radius: 50% 50% 50% 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
     background: var(--color-surface-solid);
     position: absolute;
-    transform: rotate(-45deg);
     left: 50%;
     top: 50%;
-    margin: -20px 0 0 -20px;
-    box-shadow: var(--shadow-md);
+    margin: -24px 0 0 -24px;
+    box-shadow: var(--shadow-md), 0 0 0 4px rgba(255, 255, 255, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s var(--ease-out-cubic);
+    transition: all 0.4s var(--ease-out-cubic);
+    overflow: hidden;
 }
 
 .marker-img {
-    width: 34px;
-    height: 34px;
-    margin: 3px 0 0 3px; /* Center inside the 40px pin */
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background-color: var(--color-accent);
     background-size: cover;
     background-position: center;
-    transform: rotate(45deg); /* counteract rotation of parent */
-    border: 2px solid white;
+    border: 3px solid var(--color-surface-solid);
     box-sizing: border-box;
-}
-
-/* The actual pulsing dot */
-.marker-dot {
-    display: none; /* Hiding the old dot style */
+    transition: transform 0.4s var(--ease-out-cubic);
 }
 
 /* Interaction */
 .custom-marker:hover .marker-pin {
-    transform: rotate(-45deg) scale(1.15) translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    transform: scale(1.15) translateY(-4px);
+    box-shadow: var(--shadow-lg), 0 0 0 6px rgba(255, 255, 255, 0.6);
     z-index: 100;
 }
 
 .custom-marker.selected .marker-pin {
-    background-color: var(--color-text-primary);
-    transform: rotate(-45deg) scale(1.2) translateY(-8px);
-    animation: markerPulse 2s infinite;
+    transform: scale(1.25) translateY(-8px);
+    box-shadow: var(--shadow-lg), 0 0 0 6px var(--color-accent);
+    z-index: 101;
 }
 
-.custom-marker.selected .marker-pin::after {
+/* Pulsing effect for selected marker */
+.custom-marker.selected::before {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 50% 50% 50% 0;
-    background-color: var(--color-accent);
+    width: 48px;
+    height: 48px;
+    left: 50%;
+    top: 50%;
+    margin: -24px 0 0 -24px;
+    border-radius: 50%;
+    background: var(--color-accent-glow);
+    animation: markerPulse 2.5s infinite var(--ease-in-out);
     z-index: -1;
-    box-shadow: 0 0 20px var(--color-accent-glow);
+    pointer-events: none;
 }
 
 @keyframes markerPulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(29, 29, 31, 0.4);
+        transform: scale(1);
+        opacity: 0.8;
     }
-    70% {
-        box-shadow: 0 0 0 15px rgba(29, 29, 31, 0);
+    50% {
+        transform: scale(2.5);
+        opacity: 0;
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(29, 29, 31, 0);
+        transform: scale(2.5);
+        opacity: 0;
     }
 }
 
@@ -308,13 +316,14 @@ body, html {
         right: 0;
         bottom: 0;
         width: 100%;
-        height: 70vh;
-        border-radius: 28px 28px 0 0;
+        height: 75vh;
+        border-radius: 32px 32px 0 0;
         border: none;
         border-top: 1px solid rgba(255,255,255,0.4);
         transform: translateY(105%);
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
-        padding-top: 20px; /* Space for handle */
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+        padding-top: 24px; /* Space for handle */
+        padding-bottom: env(safe-area-inset-bottom);
     }
 
     #info-panel.visible {
@@ -323,29 +332,29 @@ body, html {
 
     .sheet-handle {
         display: block;
-        width: 36px;
-        height: 4px;
-        background-color: rgba(60, 60, 67, 0.3); /* iOS styled handle */
-        border-radius: 2px;
+        width: 48px;
+        height: 5px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
         position: absolute;
-        top: 12px;
+        top: 10px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 20;
     }
 
     .image-container {
-        height: 240px;
+        height: 260px;
     }
 
     #close-btn {
-        top: 16px;
-        right: 16px;
-        width: 32px;
-        height: 32px;
-        background: rgba(235, 235, 240, 0.6);
-        color: #1d1d1f;
-        box-shadow: none;
+        top: 20px;
+        right: 20px;
+        width: 36px;
+        height: 36px;
+        background: rgba(240, 240, 245, 0.8);
+        color: #1a1a1c;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     #info-content h2 {
@@ -355,6 +364,6 @@ body, html {
 
     .text-container {
         padding: 24px;
-        padding-bottom: 100px;
+        padding-bottom: calc(100px + env(safe-area-inset-bottom));
     }
 }
