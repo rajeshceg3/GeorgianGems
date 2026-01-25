@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             infoContent.innerHTML = `
                 <div class="content-wrapper">
                     <div class="image-container">
-                        <img src="${fullUrl}" alt="${site.name}" loading="lazy">
+                        <img src="${fullUrl}" alt="${site.name}" loading="lazy" class="fade-in">
                     </div>
                     <div class="text-container">
                         <h2>${site.name}</h2>
@@ -166,4 +166,62 @@ document.addEventListener('DOMContentLoaded', () => {
             closePanel();
         }
     });
+
+    // Mobile Swipe-to-Close Logic
+    let touchStartY = 0;
+    let currentY = 0;
+    const swipeThreshold = 120;
+
+    const handleTouchStart = (e) => {
+        if (window.innerWidth >= 768) return;
+        // Allow drag if at top of scroll
+        if (infoContent.scrollTop > 0) return;
+
+        touchStartY = e.touches[0].clientY;
+        infoPanel.style.transition = 'none';
+    };
+
+    const handleTouchMove = (e) => {
+        if (window.innerWidth >= 768) return;
+        if (infoContent.scrollTop > 0) return;
+
+        currentY = e.touches[0].clientY;
+        const deltaY = currentY - touchStartY;
+
+        if (deltaY > 0) { // Dragging down
+            // Add some resistance/friction could be nice, but linear is fine for now
+            infoPanel.style.transform = `translateY(${deltaY}px)`;
+            if (e.cancelable) e.preventDefault();
+        }
+    };
+
+    const handleTouchEnd = (e) => {
+        if (window.innerWidth >= 768) return;
+        if (infoContent.scrollTop > 0 && touchStartY === 0) return; // didn't start valid drag
+
+        infoPanel.style.transition = ''; // Restore CSS transition
+        const deltaY = currentY - touchStartY;
+
+        if (deltaY > swipeThreshold && touchStartY !== 0) {
+            closePanel();
+            // Reset inline transform after animation (handled by closePanel removing .visible)
+            // But closePanel triggers a map flyTo.
+            // We need to ensure the panel slides down.
+            // Removing .visible will trigger the CSS transition to 105%.
+            // But we currently have an inline transform.
+            // We should clear the inline transform to let CSS take over.
+            setTimeout(() => {
+                infoPanel.style.transform = '';
+            }, 50);
+        } else {
+             // Snap back
+             infoPanel.style.transform = '';
+        }
+        touchStartY = 0;
+        currentY = 0;
+    };
+
+    infoPanel.addEventListener('touchstart', handleTouchStart, { passive: true });
+    infoPanel.addEventListener('touchmove', handleTouchMove, { passive: false });
+    infoPanel.addEventListener('touchend', handleTouchEnd);
 });
