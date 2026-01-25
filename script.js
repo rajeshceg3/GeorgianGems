@@ -71,22 +71,65 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const getResizedImage = (url, width) => {
-        if (url.includes('images.unsplash.com')) {
-            return url.replace(/w=\d+/, `w=${width}`);
-        }
-        if (url.includes('images.pexels.com')) {
-            return url.replace(/w=\d+/, `w=${width}`);
+        try {
+            if (url.includes('images.unsplash.com') || url.includes('images.pexels.com')) {
+                return url.replace(/w=\d+/, `w=${width}`);
+            }
+        } catch (e) {
+            console.warn('Image resize failed:', e);
         }
         return url;
     };
 
+    const activateMarker = (site, marker) => {
+        const isMobile = window.innerWidth < 768;
+        let targetZoom = 14; // Slightly closer zoom
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (isMobile) {
+            // Mobile: Panel height is ~75vh. We want marker in the top 25vh.
+            // We aim for the marker to be at ~15% from the top of the screen.
+            // Center of screen is 50%.
+            // OffsetY = 15vh - 50vh = -35vh.
+            offsetY = -1 * (window.innerHeight * 0.35);
+        } else {
+            // Desktop: Panel width is 440px + 32px margin = 472px.
+            // We want marker centered in the remaining space.
+            // OffsetX = (472 / 2) = 236px.
+            offsetX = 236;
+        }
+
+        flyToOffset(site.coords, targetZoom, offsetX, offsetY);
+
+        // Inject content with wrapper
+        const fullUrl = getResizedImage(site.image, 800);
+        infoContent.innerHTML = `
+            <div class="content-wrapper">
+                <div class="image-container">
+                    <img src="${fullUrl}" alt="${site.name || 'Site image'}" loading="lazy" class="fade-in" onerror="this.style.display='none'">
+                </div>
+                <div class="text-container">
+                    <h2>${site.name}</h2>
+                    <p>${site.description}</p>
+                </div>
+            </div>
+        `;
+
+        infoPanel.classList.add('visible');
+
+        // Handle marker selection state
+        markers.forEach(m => m.getElement().classList.remove('selected'));
+        marker.getElement().classList.add('selected');
+    };
+
     sites.forEach(site => {
         const thumbUrl = getResizedImage(site.image, 100);
-        const fullUrl = getResizedImage(site.image, 800);
+        const safeName = site.name.replace(/"/g, '&quot;');
 
         const customIcon = L.divIcon({
             className: 'custom-marker',
-            html: `<div class='marker-pin'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
+            html: `<div class='marker-pin' role='button' tabindex='0' aria-label='${safeName}'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
             iconSize: [48, 48],
             iconAnchor: [24, 24], // Center of the circular marker
             popupAnchor: [0, -28]
@@ -96,46 +139,23 @@ document.addEventListener('DOMContentLoaded', () => {
         markers.push(marker);
 
         marker.on('click', (e) => {
-            const isMobile = window.innerWidth < 768;
-            let targetZoom = 14; // Slightly closer zoom
-            let offsetX = 0;
-            let offsetY = 0;
-
-            if (isMobile) {
-                // Mobile: Panel height is ~75vh. We want marker in the top 25vh.
-                // We aim for the marker to be at ~15% from the top of the screen.
-                // Center of screen is 50%.
-                // OffsetY = 15vh - 50vh = -35vh.
-                offsetY = -1 * (window.innerHeight * 0.35);
-            } else {
-                // Desktop: Panel width is 440px + 32px margin = 472px.
-                // We want marker centered in the remaining space.
-                // OffsetX = (472 / 2) = 236px.
-                offsetX = 236;
-            }
-
-            flyToOffset(site.coords, targetZoom, offsetX, offsetY);
-
-            // Inject content with wrapper
-            infoContent.innerHTML = `
-                <div class="content-wrapper">
-                    <div class="image-container">
-                        <img src="${fullUrl}" alt="${site.name}" loading="lazy" class="fade-in">
-                    </div>
-                    <div class="text-container">
-                        <h2>${site.name}</h2>
-                        <p>${site.description}</p>
-                    </div>
-                </div>
-            `;
-
-            infoPanel.classList.add('visible');
-
-            // Handle marker selection state
-            markers.forEach(m => m.getElement().classList.remove('selected'));
-            marker.getElement().classList.add('selected');
-
+            activateMarker(site, marker);
             L.DomEvent.stopPropagation(e);
+        });
+
+        // Add keyboard support (Enter/Space)
+        marker.on('add', () => {
+            const el = marker.getElement();
+            const pin = el.querySelector('.marker-pin');
+            if (pin) {
+                L.DomEvent.on(pin, 'keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault(); // Prevent scrolling for Space
+                        activateMarker(site, marker);
+                        L.DomEvent.stopPropagation(e);
+                    }
+                });
+            }
         });
     });
 

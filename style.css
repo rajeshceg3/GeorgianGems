@@ -382,6 +382,15 @@ body, html {
         z-index: 20;
     }
 
+    .sheet-handle::before {
+        content: '';
+        position: absolute;
+        top: -15px;
+        bottom: -15px;
+        left: -20px;
+        right: -20px;
+    }
+
     .image-container {
         height: 260px;
     }
