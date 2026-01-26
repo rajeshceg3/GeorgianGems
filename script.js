@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoContent = document.getElementById('info-content');
     const closeBtn = document.getElementById('close-btn');
 
+    let lastFocusedElement = null;
+
     const markers = [];
 
     const flyToOffset = (latlng, zoom, offsetX, offsetY) => {
@@ -82,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const activateMarker = (site, marker) => {
+        // Capture currently focused element to restore later
+        lastFocusedElement = document.activeElement;
+
         const isMobile = window.innerWidth < 768;
         let targetZoom = 14; // Slightly closer zoom
         let offsetX = 0;
@@ -104,19 +109,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Inject content with wrapper
         const fullUrl = getResizedImage(site.image, 800);
-        infoContent.innerHTML = `
-            <div class="content-wrapper">
-                <div class="image-container">
-                    <img src="${fullUrl}" alt="${site.name || 'Site image'}" loading="lazy" class="fade-in" onerror="this.style.display='none'">
-                </div>
-                <div class="text-container">
-                    <h2>${site.name}</h2>
-                    <p>${site.description}</p>
-                </div>
-            </div>
-        `;
+
+        // Securely build DOM elements to prevent XSS
+        infoContent.innerHTML = ''; // Clear previous content
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'content-wrapper';
+
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-container';
+
+        const img = document.createElement('img');
+        img.src = fullUrl;
+        img.alt = site.name || 'Site image';
+        img.loading = 'lazy';
+        img.className = 'fade-in';
+        img.onerror = function() { this.style.display = 'none'; };
+        imageContainer.appendChild(img);
+
+        const textContainer = document.createElement('div');
+        textContainer.className = 'text-container';
+
+        const h2 = document.createElement('h2');
+        h2.textContent = site.name;
+
+        const p = document.createElement('p');
+        p.textContent = site.description;
+
+        textContainer.appendChild(h2);
+        textContainer.appendChild(p);
+
+        wrapper.appendChild(imageContainer);
+        wrapper.appendChild(textContainer);
+
+        infoContent.appendChild(wrapper);
 
         infoPanel.classList.add('visible');
+
+        // Move focus to the panel for accessibility
+        infoPanel.focus();
 
         // Handle marker selection state
         markers.forEach(m => m.getElement().classList.remove('selected'));
@@ -162,6 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePanel = () => {
         infoPanel.classList.remove('visible');
         markers.forEach(m => m.getElement().classList.remove('selected'));
+
+        // Restore focus to the marker
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+        }
 
         const isMobile = window.innerWidth < 768;
         const targetZoom = isMobile ? 6 : 7;
