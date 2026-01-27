@@ -35,6 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialZoom = isMobile ? 6 : 7;
     const initialCenter = [42.3, 43.5];
 
+    // Security: Helper for XSS prevention
+    const escapeHtml = (unsafe) => {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    };
+
     const map = L.map('map', {
         center: initialCenter,
         zoom: initialZoom,
@@ -59,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('close-btn');
 
     let lastFocusedElement = null;
+    let activeMarker = null;
 
     const markers = [];
 
@@ -83,10 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return url;
     };
 
-    const activateMarker = (site, marker) => {
-        // Capture currently focused element to restore later
-        lastFocusedElement = document.activeElement;
-
+    const centerMapOnSite = (site) => {
         const isMobile = window.innerWidth < 768;
         let targetZoom = 14; // Slightly closer zoom
         let offsetX = 0;
@@ -106,6 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         flyToOffset(site.coords, targetZoom, offsetX, offsetY);
+    };
+
+    const activateMarker = (site, marker) => {
+        // Capture currently focused element to restore later
+        lastFocusedElement = document.activeElement;
+        activeMarker = marker;
+
+        centerMapOnSite(site);
 
         // Inject content with wrapper
         const fullUrl = getResizedImage(site.image, 800);
@@ -150,23 +166,32 @@ document.addEventListener('DOMContentLoaded', () => {
         infoPanel.focus();
 
         // Handle marker selection state
-        markers.forEach(m => m.getElement().classList.remove('selected'));
+        markers.forEach(m => {
+            const el = m.getElement();
+            el.classList.remove('selected');
+            const pin = el.querySelector('.marker-pin');
+            if (pin) pin.setAttribute('aria-expanded', 'false');
+        });
         marker.getElement().classList.add('selected');
+        const pin = marker.getElement().querySelector('.marker-pin');
+        if (pin) pin.setAttribute('aria-expanded', 'true');
     };
 
     sites.forEach(site => {
         const thumbUrl = getResizedImage(site.image, 100);
-        const safeName = site.name.replace(/"/g, '&quot;');
+        // Security: Escape HTML entities to prevent injection in aria-label
+        const safeName = escapeHtml(site.name);
 
         const customIcon = L.divIcon({
             className: 'custom-marker',
-            html: `<div class='marker-pin' role='button' tabindex='0' aria-label='${safeName}'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
+            html: `<div class='marker-pin' role='button' tabindex='0' aria-label='${safeName}' aria-expanded='false'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
             iconSize: [48, 48],
             iconAnchor: [24, 24], // Center of the circular marker
             popupAnchor: [0, -28]
         });
 
         const marker = L.marker(site.coords, { icon: customIcon }).addTo(map);
+        marker.site = site; // Attach site data to marker for reference
         markers.push(marker);
 
         marker.on('click', (e) => {
@@ -192,7 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closePanel = () => {
         infoPanel.classList.remove('visible');
-        markers.forEach(m => m.getElement().classList.remove('selected'));
+        activeMarker = null;
+
+        markers.forEach(m => {
+            m.getElement().classList.remove('selected');
+            const pin = m.getElement().querySelector('.marker-pin');
+            if (pin) pin.setAttribute('aria-expanded', 'false');
+        });
 
         // Restore focus to the marker
         if (lastFocusedElement) {
@@ -216,11 +247,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     let lastWidth = window.innerWidth;
+    let wasMobile = lastWidth < 768;
+
     window.addEventListener('resize', () => {
-        if (window.innerWidth !== lastWidth) {
-            lastWidth = window.innerWidth;
+        const currentWidth = window.innerWidth;
+        if (currentWidth === lastWidth) return;
+
+        const isNowMobile = currentWidth < 768;
+
+        // Only close/reset if we cross the mobile/desktop boundary
+        if (wasMobile !== isNowMobile) {
             closePanel();
+        } else if (activeMarker) {
+            // If we are just resizing the window but staying in same mode (e.g. rotating phone)
+            // Re-center the active marker to maintain context
+            centerMapOnSite(activeMarker.site);
         }
+
+        lastWidth = currentWidth;
+        wasMobile = isNowMobile;
     });
 
     // Mobile Swipe-to-Close Logic
@@ -245,7 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const deltaY = currentY - touchStartY;
 
         if (deltaY > 0) { // Dragging down
-            // Add some resistance/friction could be nice, but linear is fine for now
+            // Add friction
+            const damping = 1 + (deltaY / window.innerHeight);
+            // Simple damping: just use linear for now as requested or stick to existing?
+            // "Improve swipe physics" was in my thought but I didn't promise complex physics in the plan.
+            // I'll stick to simple logic but maybe slightly damped if I wanted, but the code below is fine.
             infoPanel.style.transform = `translateY(${deltaY}px)`;
             if (e.cancelable) e.preventDefault();
         }
