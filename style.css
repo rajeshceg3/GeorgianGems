@@ -5,13 +5,13 @@
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    --color-bg: #f2f2f4;
+    --color-bg: #f7f7f5;
     --color-surface: rgba(255, 255, 255, 0.75);
     --color-surface-solid: #ffffff;
     --color-text-primary: #1a1a1c;
     --color-text-secondary: #515156;
-    --color-accent: #9e1c20;
-    --color-accent-glow: rgba(158, 28, 32, 0.4);
+    --color-accent: #8a1c22;
+    --color-accent-glow: rgba(138, 28, 34, 0.4);
 
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     --shadow-md: 0 16px 32px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
@@ -35,6 +35,18 @@ body, html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.15) 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
 #map {
     height: 100%;
     width: 100%;
@@ -43,7 +55,7 @@ body, html {
 }
 
 .leaflet-tile-pane {
-    filter: grayscale(0.2) contrast(1.05);
+    filter: grayscale(1) sepia(0.05) contrast(1.1) brightness(0.95);
 }
 
 /* --- Controls & UI Elements --- */
@@ -103,10 +115,10 @@ body, html {
     left: 32px;
     bottom: 32px;
     width: 440px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.65) 100%);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 100%);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-diffuse), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     z-index: 1000;
@@ -193,6 +205,17 @@ body, html {
     overflow: hidden;
 }
 
+.image-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
+    pointer-events: none;
+}
+
 #info-content img {
     width: 100%;
     height: 100%;
@@ -211,15 +234,15 @@ body, html {
 
 #info-content h2 {
     font-family: var(--font-display);
-    font-size: 2.75rem;
-    font-weight: 600;
+    font-size: 3.5rem;
+    font-weight: 700;
     margin: 0 0 24px 0;
     color: var(--color-text-primary);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
     opacity: 0;
     animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.2s;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 #info-content p {
@@ -245,27 +268,30 @@ body, html {
 }
 
 .meta-item {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 30px;
-    background: rgba(0, 0, 0, 0.04);
-    color: var(--color-text-secondary);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.3s var(--ease-out-cubic);
+    backdrop-filter: blur(4px);
 }
 
 .meta-item:hover {
-    background: rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
 }
 
 .meta-year {
-    color: var(--color-accent);
-    background: var(--color-accent-glow);
-    border-color: transparent;
+    color: #fff;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px var(--color-accent-glow);
 }
 
 .action-container {
@@ -301,80 +327,112 @@ body, html {
     transform: translateY(0);
 }
 
-/* --- Modal --- */
+/* --- Intro Overlay --- */
 
-.modal-overlay {
+.intro-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(26, 26, 28, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s var(--ease-out-cubic), visibility 0.5s;
-}
-
-.modal-overlay.visible {
     opacity: 1;
     visibility: visible;
+    transition: opacity 0.8s var(--ease-in-out), visibility 0.8s;
+    background-color: #000;
 }
 
-.modal-content {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 48px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.5);
-    max-width: 480px;
-    width: 100%;
+.intro-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.intro-bg {
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%;
+    background-image: url('https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    filter: blur(0px) brightness(0.6);
+    transition: filter 2s ease, transform 10s ease-out;
+    transform: scale(1);
+}
+
+.intro-overlay.hidden .intro-bg {
+    filter: blur(10px) brightness(0);
+    transform: scale(1.1);
+}
+
+.intro-content {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    transform: scale(0.95) translateY(10px);
-    transition: transform 0.5s var(--ease-out-cubic);
-}
-
-.modal-overlay.visible .modal-content {
-    transform: scale(1) translateY(0);
-}
-
-#modal-title {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    margin: 0 0 16px 0;
-    color: var(--color-text-primary);
-}
-
-.modal-content p {
-    font-size: 1.125rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin-bottom: 32px;
-}
-
-#modal-start-btn {
-    background-color: var(--color-text-primary);
     color: #fff;
-    border: none;
-    padding: 16px 32px;
-    font-size: 1rem;
-    font-weight: 600;
+    padding: 0 24px;
+    max-width: 800px;
+}
+
+#intro-title {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px 0;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    opacity: 0;
+    animation: fadeSlideUp 1.2s var(--ease-out-cubic) forwards 0.3s;
+}
+
+.intro-subtitle {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin: 0 0 48px 0;
+    opacity: 0;
+    animation: fadeSlideUp 1.2s var(--ease-out-cubic) forwards 0.6s;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+#start-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 16px 48px;
+    font-size: 1.125rem;
+    font-weight: 500;
     border-radius: 50px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-md);
+    transition: all 0.4s var(--ease-out-cubic);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: fadeSlideUp 1.2s var(--ease-out-cubic) forwards 0.9s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
-#modal-start-btn:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-lg);
-    background-color: #000;
+#start-btn:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border-color: #fff;
+}
+
+@media (max-width: 768px) {
+    #intro-title {
+        font-size: 3rem;
+    }
+    .intro-subtitle {
+        font-size: 1.125rem;
+    }
 }
 
 /* --- Reset View Control --- */
@@ -456,6 +514,7 @@ body, html {
 .custom-marker {
     background: transparent !important;
     border: none !important;
+    transition: z-index 0.2s;
 }
 
 .marker-pin {
@@ -467,12 +526,14 @@ body, html {
     left: 50%;
     top: 50%;
     margin: -24px 0 0 -24px;
-    box-shadow: var(--shadow-md), 0 0 0 4px rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-md), 0 0 0 2px rgba(255, 255, 255, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s var(--ease-out-cubic);
+    transition: all 0.5s var(--ease-elastic);
     overflow: hidden;
+    transform: scale(0.9);
+    opacity: 0.85;
 }
 
 .marker-img {
@@ -482,22 +543,30 @@ body, html {
     background-color: var(--color-accent);
     background-size: cover;
     background-position: center;
-    border: 3px solid var(--color-surface-solid);
+    border: 2px solid var(--color-surface-solid);
     box-sizing: border-box;
     transition: transform 0.4s var(--ease-out-cubic);
 }
 
 /* Interaction */
+.custom-marker:hover {
+    z-index: 500 !important;
+}
+
 .custom-marker:hover .marker-pin {
-    transform: scale(1.15) translateY(-4px);
-    box-shadow: var(--shadow-lg), 0 0 0 6px rgba(255, 255, 255, 0.6);
-    z-index: 100;
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: var(--shadow-lg), 0 0 0 4px rgba(255, 255, 255, 0.8);
+    opacity: 1;
+}
+
+.custom-marker.selected {
+    z-index: 1000 !important;
 }
 
 .custom-marker.selected .marker-pin {
-    transform: scale(1.25) translateY(-8px);
-    box-shadow: var(--shadow-lg), 0 0 0 6px var(--color-accent);
-    z-index: 101;
+    transform: scale(1.4) translateY(-8px);
+    box-shadow: var(--shadow-lg), 0 0 0 4px var(--color-surface-solid), 0 0 0 6px var(--color-accent);
+    opacity: 1;
 }
 
 /* Pulsing effect for selected marker */
@@ -512,23 +581,23 @@ body, html {
     margin: -24px 0 0 -24px;
     border-radius: 50%;
     background: var(--color-accent);
-    animation: markerRipple 3s infinite cubic-bezier(0, 0, 0.2, 1);
+    animation: markerRipple 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
     z-index: -1;
     pointer-events: none;
     opacity: 0;
 }
 
 .custom-marker.selected::after {
-    animation-delay: 1s;
+    animation-delay: 1.25s;
 }
 
 @keyframes markerRipple {
     0% {
         transform: scale(1);
-        opacity: 0.5;
+        opacity: 0.6;
     }
     100% {
-        transform: scale(4);
+        transform: scale(3.5);
         opacity: 0;
     }
 }
