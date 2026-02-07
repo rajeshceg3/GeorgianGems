@@ -233,6 +233,202 @@ body, html {
     animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.3s;
 }
 
+/* --- Metadata & Actions --- */
+
+.meta-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.25s;
+}
+
+.meta-item {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 12px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--color-text-secondary);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.meta-item:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+.meta-year {
+    color: var(--color-accent);
+    background: var(--color-accent-glow);
+    border-color: transparent;
+}
+
+.action-container {
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.4s;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px 24px;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all 0.3s var(--ease-out-cubic);
+    box-shadow: 0 4px 12px var(--color-accent-glow);
+    box-sizing: border-box;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--color-accent-glow);
+    background-color: #b52227; /* Slightly darker/richer accent */
+}
+
+.btn-action:active {
+    transform: translateY(0);
+}
+
+/* --- Modal --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 26, 28, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s var(--ease-out-cubic), visibility 0.5s;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 48px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.5);
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.5s var(--ease-out-cubic);
+}
+
+.modal-overlay.visible .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+#modal-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin: 0 0 16px 0;
+    color: var(--color-text-primary);
+}
+
+.modal-content p {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+#modal-start-btn {
+    background-color: var(--color-text-primary);
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-md);
+}
+
+#modal-start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+    background-color: #000;
+}
+
+/* --- Reset View Control --- */
+
+#reset-view-btn {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000; /* Above map */
+    color: var(--color-text-primary);
+    transition: all 0.3s var(--ease-out-cubic);
+}
+
+#reset-view-btn:hover {
+    transform: scale(1.1) rotate(-45deg); /* Playful rotation */
+    box-shadow: var(--shadow-lg);
+    color: var(--color-accent);
+}
+
+#reset-view-btn svg {
+    display: block;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    #reset-view-btn {
+        bottom: 96px; /* Above the collapsed panel (which is roughly ~100px visible area maybe? No, collapsed is hidden offscreen mostly) */
+        /* Wait, panel logic: transform translateY(105%). But on mobile it might peek? No.
+           However, let's keep it safe. Bottom right is fine. */
+        right: 20px;
+        bottom: 40px; /* Standard FAB position */
+        width: 48px;
+        height: 48px;
+    }
+
+    .modal-content {
+        padding: 32px 24px;
+    }
+
+    #modal-title {
+        font-size: 2rem;
+    }
+}
+
 @keyframes fadeSlideUp {
     from {
         opacity: 0;

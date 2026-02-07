@@ -4,28 +4,44 @@ const sites = [
         name: 'Historical Monuments of Mtskheta',
         coords: [41.8425, 44.7214],
         image: 'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop',
-        description: 'The ancient capital of Georgia, Mtskheta is home to stunning examples of medieval religious architecture. The confluence of the Mtkvari and Aragvi rivers provides a dramatic backdrop to these monuments of great cultural and artistic significance.'
+        description: 'The ancient capital of Georgia, Mtskheta is home to stunning examples of medieval religious architecture. The confluence of the Mtkvari and Aragvi rivers provides a dramatic backdrop to these monuments of great cultural and artistic significance.',
+        year: 1994,
+        category: 'Cultural',
+        region: 'Mtskheta-Mtianeti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.8425,44.7214'
     },
     {
         id: 'svaneti',
         name: 'Upper Svaneti',
         coords: [43.0456, 42.7289],
         image: 'https://images.unsplash.com/photo-1714316457727-4ba836ee61ca?fm=jpg&q=80&w=2000&auto=format&fit=crop',
-        description: 'Preserved by its long isolation in the high mountains of the Caucasus, the region of Upper Svaneti is an exceptional example of medieval mountain scenery with its characteristic tower houses. The Svan towers were used both as dwellings and as defense posts against invaders.'
+        description: 'Preserved by its long isolation in the high mountains of the Caucasus, the region of Upper Svaneti is an exceptional example of medieval mountain scenery with its characteristic tower houses. The Svan towers were used both as dwellings and as defense posts against invaders.',
+        year: 1996,
+        category: 'Cultural',
+        region: 'Samegrelo-Zemo Svaneti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=43.0456,42.7289'
     },
     {
         id: 'gelati',
         name: 'Gelati Monastery',
         coords: [42.2925, 42.7714],
         image: 'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop',
-        description: 'Founded in a 12th century, the Gelati Monastery is a masterpiece of the Golden Age of medieval Georgia. It was a centre of science and education and the Academy it housed was one of the most important cultural centres in ancient Georgia.'
+        description: 'Founded in a 12th century, the Gelati Monastery is a masterpiece of the Golden Age of medieval Georgia. It was a centre of science and education and the Academy it housed was one of the most important cultural centres in ancient Georgia.',
+        year: 1994,
+        category: 'Cultural',
+        region: 'Imereti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.2925,42.7714'
     },
     {
         id: 'colchis',
         name: 'Colchic Rainforests and Wetlands',
         coords: [42.12, 41.70],
         image: 'https://images.unsplash.com/photo-1715258400290-c095d69ac3e0?fm=jpg&q=80&w=2000&auto=format&fit=crop',
-        description: 'This site comprises a series of ecosystems including deciduous rainforests and wetlands, which have survived the glacial cycles of the Tertiary period. They are home to a highly diverse flora and fauna, with a large number of endemic and relict species.'
+        description: 'This site comprises a series of ecosystems including deciduous rainforests and wetlands, which have survived the glacial cycles of the Tertiary period. They are home to a highly diverse flora and fauna, with a large number of endemic and relict species.',
+        year: 2021,
+        category: 'Natural',
+        region: 'Guria / Adjara',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.12,41.70'
     }
 ];
 
@@ -149,11 +165,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const h2 = document.createElement('h2');
         h2.textContent = site.name;
 
+        // Metadata Container
+        const metaContainer = document.createElement('div');
+        metaContainer.className = 'meta-container';
+
+        // Helper to create meta items
+        const createMetaItem = (label, value, iconClass) => {
+            const item = document.createElement('div');
+            item.className = `meta-item meta-${label.toLowerCase()}`;
+            // Simple text content for now, CSS will handle icons or styling
+            item.innerHTML = `<span>${value}</span>`;
+            item.setAttribute('aria-label', `${label}: ${value}`);
+            return item;
+        };
+
+        if (site.year) metaContainer.appendChild(createMetaItem('Year', site.year));
+        if (site.category) metaContainer.appendChild(createMetaItem('Category', site.category));
+        if (site.region) metaContainer.appendChild(createMetaItem('Region', site.region));
+
         const p = document.createElement('p');
         p.textContent = site.description;
 
+        // Action Container
+        const actionContainer = document.createElement('div');
+        actionContainer.className = 'action-container';
+
+        if (site.googleMapsUrl) {
+            const btn = document.createElement('a');
+            btn.className = 'btn-action';
+            btn.href = site.googleMapsUrl;
+            btn.target = '_blank';
+            btn.rel = 'noopener noreferrer';
+            btn.textContent = 'View on Google Maps';
+            actionContainer.appendChild(btn);
+        }
+
         textContainer.appendChild(h2);
+        textContainer.appendChild(metaContainer);
         textContainer.appendChild(p);
+        textContainer.appendChild(actionContainer);
 
         wrapper.appendChild(imageContainer);
         wrapper.appendChild(textContainer);
@@ -266,6 +316,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
         lastWidth = currentWidth;
         wasMobile = isNowMobile;
+    });
+
+    // --- Modal Logic ---
+    const aboutModal = document.getElementById('about-modal');
+    const modalStartBtn = document.getElementById('modal-start-btn');
+
+    const showModal = () => {
+        aboutModal.classList.add('visible');
+        aboutModal.setAttribute('aria-hidden', 'false');
+        modalStartBtn.focus();
+    };
+
+    const closeModal = () => {
+        aboutModal.classList.remove('visible');
+        aboutModal.setAttribute('aria-hidden', 'true');
+        // Return focus to map or body? Map container seems appropriate.
+        document.getElementById('map').focus();
+    };
+
+    modalStartBtn.addEventListener('click', closeModal);
+
+    // Show modal on load with a slight delay
+    setTimeout(showModal, 500);
+
+    // --- Reset View Logic ---
+    const resetViewBtn = document.getElementById('reset-view-btn');
+
+    resetViewBtn.addEventListener('click', () => {
+        closePanel(); // Deselect any marker
+        const isMobile = window.innerWidth < 768;
+        const targetZoom = isMobile ? 6 : 7;
+        map.flyTo(initialCenter, targetZoom, {
+            animate: true,
+            duration: 1.5
+        });
     });
 
     // Mobile Swipe-to-Close Logic
