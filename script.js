@@ -51,6 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialZoom = isMobile ? 6 : 7;
     const initialCenter = [42.3, 43.5];
 
+    // Start view (Global/Europe)
+    const startZoom = 4;
+    const startCenter = [42.0, 43.5];
+
     // Security: Helper for XSS prevention
     const escapeHtml = (unsafe) => {
         return unsafe
@@ -62,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const map = L.map('map', {
-        center: initialCenter,
-        zoom: initialZoom,
+        center: startCenter,
+        zoom: startZoom,
         scrollWheelZoom: true,
         zoomControl: false, // We'll add it manually to position it
         zoomSnap: 0.5 // Smoother zooming
@@ -318,27 +322,24 @@ document.addEventListener('DOMContentLoaded', () => {
         wasMobile = isNowMobile;
     });
 
-    // --- Modal Logic ---
-    const aboutModal = document.getElementById('about-modal');
-    const modalStartBtn = document.getElementById('modal-start-btn');
+    // --- Intro Logic ---
+    const introOverlay = document.getElementById('intro-overlay');
+    const startBtn = document.getElementById('start-btn');
 
-    const showModal = () => {
-        aboutModal.classList.add('visible');
-        aboutModal.setAttribute('aria-hidden', 'false');
-        modalStartBtn.focus();
-    };
+    startBtn.addEventListener('click', () => {
+        introOverlay.classList.add('hidden');
+        introOverlay.setAttribute('aria-hidden', 'true');
 
-    const closeModal = () => {
-        aboutModal.classList.remove('visible');
-        aboutModal.setAttribute('aria-hidden', 'true');
-        // Return focus to map or body? Map container seems appropriate.
+        // Cinematic Fly-in
+        const targetZoom = window.innerWidth < 768 ? 6 : 7;
+        map.flyTo(initialCenter, targetZoom, {
+            animate: true,
+            duration: 2.5,
+            easeLinearity: 0.2
+        });
+
         document.getElementById('map').focus();
-    };
-
-    modalStartBtn.addEventListener('click', closeModal);
-
-    // Show modal on load with a slight delay
-    setTimeout(showModal, 500);
+    });
 
     // --- Reset View Logic ---
     const resetViewBtn = document.getElementById('reset-view-btn');
@@ -369,19 +370,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleTouchMove = (e) => {
         if (window.innerWidth >= 768) return;
-        if (infoContent.scrollTop > 0) return;
+        // Check if we are at the top of the content
+        if (infoContent.scrollTop > 0) {
+            // Allow native scroll, update start point for drag if we hit top
+            touchStartY = e.touches[0].clientY;
+            return;
+        }
 
         currentY = e.touches[0].clientY;
         const deltaY = currentY - touchStartY;
 
-        if (deltaY > 0) { // Dragging down
-            // Add friction
-            const damping = 1 + (deltaY / window.innerHeight);
-            // Simple damping: just use linear for now as requested or stick to existing?
-            // "Improve swipe physics" was in my thought but I didn't promise complex physics in the plan.
-            // I'll stick to simple logic but maybe slightly damped if I wanted, but the code below is fine.
-            infoPanel.style.transform = `translateY(${deltaY}px)`;
-            if (e.cancelable) e.preventDefault();
+        // Apply resistance
+        let translateY = deltaY;
+
+        if (deltaY < 0) {
+            // Dragging up
+            if (infoContent.scrollHeight > infoContent.clientHeight) {
+                 // Content is scrollable, let native scroll handle it
+                 return;
+            }
+            // Not scrollable, apply resistance overshoot
+            translateY = deltaY * 0.25;
+        }
+        // Dragging down is 1:1 for natural feel
+
+        infoPanel.style.transform = `translateY(${translateY}px)`;
+
+        // Prevent default only if we are effectively dragging the panel
+        if (e.cancelable) {
+             // If dragging down, always prevent default to stop refresh/scroll
+             if (deltaY > 0) e.preventDefault();
+             // If dragging up (overshoot on non-scrollable), prevent default
+             else if (deltaY < 0 && infoContent.scrollHeight <= infoContent.clientHeight) e.preventDefault();
         }
     };
 
