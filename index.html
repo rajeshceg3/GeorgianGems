@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="map"></div>
+    <div id="map" tabindex="-1"></div>
     <div id="info-panel" class="hidden" tabindex="-1">
         <div class="sheet-handle"></div>
         <button id="close-btn" aria-label="Close details">&times;</button>
@@ -21,6 +21,24 @@
             <!-- Content will be injected by JavaScript -->
         </div>
     </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <h1 id="modal-title">Discover Georgian Gems</h1>
+            <p>Explore the timeless beauty of Georgia's UNESCO World Heritage sites. From ancient cathedrals to untouched rainforests, journey through history and nature.</p>
+            <button id="modal-start-btn">Start Exploring</button>
+        </div>
+    </div>
+
+    <!-- Reset View Control -->
+    <button id="reset-view-btn" aria-label="Reset Map View">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+        </svg>
+    </button>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="script.js"></script>
 </body>
