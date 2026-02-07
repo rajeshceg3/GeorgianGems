@@ -8,7 +8,13 @@ const sites = [
         year: 1994,
         category: 'Cultural',
         region: 'Mtskheta-Mtianeti',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.8425,44.7214'
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.8425,44.7214',
+        visitorInfo: {
+            hours: '10:00 - 18:00 (Daily)',
+            cost: 'Free (Jvari), ~15 GEL (Svetitskhoveli)'
+        },
+        bestTime: 'April-May or September-October',
+        tips: 'Visit Jvari Monastery at sunset for the iconic view of the river confluence.'
     },
     {
         id: 'svaneti',
@@ -19,7 +25,13 @@ const sites = [
         year: 1996,
         category: 'Cultural',
         region: 'Samegrelo-Zemo Svaneti',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=43.0456,42.7289'
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=43.0456,42.7289',
+        visitorInfo: {
+            hours: '24/7 (Region)',
+            cost: 'Free (Nature), Museums ~10 GEL'
+        },
+        bestTime: 'June-September for hiking',
+        tips: 'The road to Ushguli requires a 4x4 vehicle. Allow at least 3-4 days to explore properly.'
     },
     {
         id: 'gelati',
@@ -30,7 +42,13 @@ const sites = [
         year: 1994,
         category: 'Cultural',
         region: 'Imereti',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.2925,42.7714'
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.2925,42.7714',
+        visitorInfo: {
+            hours: '10:00 - 18:00',
+            cost: 'Free entry'
+        },
+        bestTime: 'Late spring or early autumn',
+        tips: 'Look up to see the magnificent mosaics in the apse, especially the Virgin and Child.'
     },
     {
         id: 'colchis',
@@ -41,7 +59,13 @@ const sites = [
         year: 2021,
         category: 'Natural',
         region: 'Guria / Adjara',
-        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.12,41.70'
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.12,41.70',
+        visitorInfo: {
+            hours: '09:00 - 18:00 (Visitor Center)',
+            cost: 'Boat tours ~30-50 GEL'
+        },
+        bestTime: 'Spring and Autumn (Migration seasons)',
+        tips: 'Take a boat tour on Paliastomi Lake for the best birdwatching experience.'
     }
 ];
 
@@ -190,6 +214,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const p = document.createElement('p');
         p.textContent = site.description;
 
+        // Visitor Info Grid
+        const infoGrid = document.createElement('div');
+        infoGrid.className = 'visitor-info-grid';
+
+        const createInfoCard = (label, value) => {
+            const card = document.createElement('div');
+            card.className = 'info-card';
+            card.innerHTML = `<span class="info-label">${label}</span><span class="info-value">${value}</span>`;
+            return card;
+        };
+
+        if (site.visitorInfo) {
+            if (site.visitorInfo.hours) infoGrid.appendChild(createInfoCard('Hours', site.visitorInfo.hours));
+            if (site.visitorInfo.cost) infoGrid.appendChild(createInfoCard('Cost', site.visitorInfo.cost));
+        }
+        if (site.bestTime) infoGrid.appendChild(createInfoCard('Best Time', site.bestTime));
+
+        // Insider Tip
+        let tipBox = null;
+        if (site.tips) {
+            tipBox = document.createElement('div');
+            tipBox.className = 'insider-tip';
+            tipBox.innerHTML = `<span class="tip-icon">✦</span><div class="tip-content"><strong>Insider Tip</strong><br>${site.tips}</div>`;
+        }
+
         // Action Container
         const actionContainer = document.createElement('div');
         actionContainer.className = 'action-container';
@@ -204,9 +253,34 @@ document.addEventListener('DOMContentLoaded', () => {
             actionContainer.appendChild(btn);
         }
 
+        // Share Button
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'btn-action btn-secondary share-btn';
+        shareBtn.textContent = 'Share Location';
+        shareBtn.onclick = () => {
+             const shareData = {
+                title: site.name,
+                text: `Check out ${site.name} on Georgian Gems!`,
+                url: window.location.href
+            };
+            if (navigator.share) {
+                navigator.share(shareData).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(`${site.name}: ${window.location.href}`);
+                const originalText = shareBtn.textContent;
+                shareBtn.textContent = 'Copied!';
+                setTimeout(() => shareBtn.textContent = originalText, 2000);
+            }
+        };
+        actionContainer.appendChild(shareBtn);
+
         textContainer.appendChild(h2);
         textContainer.appendChild(metaContainer);
         textContainer.appendChild(p);
+
+        if (infoGrid.hasChildNodes()) textContainer.appendChild(infoGrid);
+        if (tipBox) textContainer.appendChild(tipBox);
+
         textContainer.appendChild(actionContainer);
 
         wrapper.appendChild(imageContainer);
@@ -434,4 +508,40 @@ document.addEventListener('DOMContentLoaded', () => {
     infoPanel.addEventListener('touchstart', handleTouchStart, { passive: true });
     infoPanel.addEventListener('touchmove', handleTouchMove, { passive: false });
     infoPanel.addEventListener('touchend', handleTouchEnd);
+
+    // --- Filter Logic ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    const filterSites = (category) => {
+        // Update active button state
+        filterBtns.forEach(btn => {
+            const isSelected = btn.dataset.category === category;
+            btn.classList.toggle('active', isSelected);
+            btn.setAttribute('aria-pressed', isSelected);
+        });
+
+        markers.forEach(marker => {
+            const site = marker.site;
+            if (category === 'all' || site.category === category) {
+                if (!map.hasLayer(marker)) {
+                    marker.addTo(map);
+                }
+            } else {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            }
+        });
+
+        // Close panel if the active marker is filtered out
+        if (activeMarker && category !== 'all' && activeMarker.site.category !== category) {
+            closePanel();
+        }
+    };
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterSites(btn.dataset.category);
+        });
+    });
 });
