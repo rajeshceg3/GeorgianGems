@@ -3,7 +3,10 @@ const sites = [
         id: 'mtskheta',
         name: 'Historical Monuments of Mtskheta',
         coords: [41.8425, 44.7214],
-        image: 'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+        images: [
+            'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1565008576549-57569a49371d?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
         description: 'The ancient capital of Georgia, Mtskheta is home to stunning examples of medieval religious architecture. The confluence of the Mtkvari and Aragvi rivers provides a dramatic backdrop to these monuments of great cultural and artistic significance.',
         year: 1994,
         category: 'Cultural',
@@ -20,7 +23,10 @@ const sites = [
         id: 'svaneti',
         name: 'Upper Svaneti',
         coords: [43.0456, 42.7289],
-        image: 'https://images.unsplash.com/photo-1714316457727-4ba836ee61ca?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+        images: [
+            'https://images.unsplash.com/photo-1714316457727-4ba836ee61ca?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1519681393798-38e43269d492?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
         description: 'Preserved by its long isolation in the high mountains of the Caucasus, the region of Upper Svaneti is an exceptional example of medieval mountain scenery with its characteristic tower houses. The Svan towers were used both as dwellings and as defense posts against invaders.',
         year: 1996,
         category: 'Cultural',
@@ -37,7 +43,10 @@ const sites = [
         id: 'gelati',
         name: 'Gelati Monastery',
         coords: [42.2925, 42.7714],
-        image: 'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+        images: [
+            'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1523539693385-e5e891eb4465?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
         description: 'Founded in a 12th century, the Gelati Monastery is a masterpiece of the Golden Age of medieval Georgia. It was a centre of science and education and the Academy it housed was one of the most important cultural centres in ancient Georgia.',
         year: 1994,
         category: 'Cultural',
@@ -54,7 +63,10 @@ const sites = [
         id: 'colchis',
         name: 'Colchic Rainforests and Wetlands',
         coords: [42.12, 41.70],
-        image: 'https://images.unsplash.com/photo-1715258400290-c095d69ac3e0?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+        images: [
+            'https://images.unsplash.com/photo-1715258400290-c095d69ac3e0?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1500382017468-9049fed747ef?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
         description: 'This site comprises a series of ecosystems including deciduous rainforests and wetlands, which have survived the glacial cycles of the Tertiary period. They are home to a highly diverse flora and fauna, with a large number of endemic and relict species.',
         year: 2021,
         category: 'Natural',
@@ -66,6 +78,66 @@ const sites = [
         },
         bestTime: 'Spring and Autumn (Migration seasons)',
         tips: 'Take a boat tour on Paliastomi Lake for the best birdwatching experience.'
+    },
+    {
+        id: 'vardzia',
+        name: 'Vardzia Cave Monastery',
+        coords: [41.3813, 43.2843],
+        images: [
+            'https://images.unsplash.com/photo-1714316457727-4ba836ee61ca?fm=jpg&q=80&w=2000&auto=format&fit=crop', // Reused Svaneti
+            'https://images.unsplash.com/photo-1565008576549-57569a49371d?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Vardzia is a spectacular cave monastery complex in southern Georgia, excavated from the slopes of the Erusheti Mountain on the left bank of the Kura River. Built in the late 12th century, it was a sanctuary during Mongol invasions.',
+        year: 2007,
+        category: 'Cultural',
+        region: 'Samtskhe-Javakheti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.3813,43.2843',
+        visitorInfo: {
+            hours: '10:00 - 19:00',
+            cost: 'Adults ~15 GEL'
+        },
+        bestTime: 'Spring or early Autumn',
+        tips: 'Wear comfortable shoes as there are many steps and uneven surfaces.'
+    },
+    {
+        id: 'uplistsikhe',
+        name: 'Uplistsikhe Cave Town',
+        coords: [41.9673, 44.2078],
+        images: [
+            'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop', // Reused Mtskheta
+            'https://images.unsplash.com/photo-1572979245229-87389c937190?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Uplistsikhe is an ancient rock-hewn town in eastern Georgia. Built on a high rocky left bank of the Mtkvari River, it contains various structures dating from the Early Iron Age to the Late Middle Ages, and is notable for the unique combination of various styles of rock-cut cultures.',
+        year: 2007,
+        category: 'Cultural',
+        region: 'Shida Kartli',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.9673,44.2078',
+        visitorInfo: {
+            hours: '10:00 - 18:00',
+            cost: 'Adults ~15 GEL'
+        },
+        bestTime: 'April to October',
+        tips: 'Visit early in the morning to avoid the heat and crowds.'
+    },
+    {
+        id: 'david_gareji',
+        name: 'David Gareji Monasteries',
+        coords: [41.4475, 45.3764],
+        images: [
+            'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop', // Reused Gelati
+            'https://images.unsplash.com/photo-1596306499300-0b7b1689b9e6?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'David Gareji is a rock-hewn Georgian Orthodox monastery complex located in the Kakheti region of Eastern Georgia, on the half-desert slopes of Mount Gareja. The complex includes hundreds of cells, churches, chapels, refectories and living quarters hollowed out of the rock face.',
+        year: 2007,
+        category: 'Cultural',
+        region: 'Kakheti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.4475,45.3764',
+        visitorInfo: {
+            hours: 'Daylight hours',
+            cost: 'Free'
+        },
+        bestTime: 'Spring (when the desert blooms)',
+        tips: 'Bring plenty of water and sun protection as it gets very hot.'
     }
 ];
 
@@ -138,6 +210,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return url;
     };
 
+    // --- Favorites Logic ---
+    const getFavorites = () => {
+        try {
+            return JSON.parse(localStorage.getItem('georgianGemsFavorites') || '[]');
+        } catch (e) {
+            return [];
+        }
+    };
+
+    const toggleFavorite = (siteId) => {
+        const favs = getFavorites();
+        const index = favs.indexOf(siteId);
+        if (index > -1) {
+            favs.splice(index, 1);
+        } else {
+            favs.push(siteId);
+        }
+        localStorage.setItem('georgianGemsFavorites', JSON.stringify(favs));
+        return index === -1; // returns true if added, false if removed
+    };
+
     const centerMapOnSite = (site) => {
         const isMobile = window.innerWidth < 768;
         let targetZoom = 14; // Slightly closer zoom
@@ -168,8 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
         centerMapOnSite(site);
 
         // Inject content with wrapper
-        const fullUrl = getResizedImage(site.image, 800);
-
         // Securely build DOM elements to prevent XSS
         infoContent.innerHTML = ''; // Clear previous content
 
@@ -177,15 +268,17 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.className = 'content-wrapper';
 
         const imageContainer = document.createElement('div');
-        imageContainer.className = 'image-container';
+        imageContainer.className = 'image-container gallery-container';
 
-        const img = document.createElement('img');
-        img.src = fullUrl;
-        img.alt = site.name || 'Site image';
-        img.loading = 'lazy';
-        img.className = 'fade-in';
-        img.onerror = function() { this.style.display = 'none'; };
-        imageContainer.appendChild(img);
+        site.images.forEach((url, idx) => {
+            const img = document.createElement('img');
+            img.src = getResizedImage(url, 800);
+            img.alt = `${site.name} - Image ${idx + 1}`;
+            img.loading = 'lazy';
+            img.className = 'gallery-item fade-in';
+            img.onerror = function() { this.style.display = 'none'; };
+            imageContainer.appendChild(img);
+        });
 
         const textContainer = document.createElement('div');
         textContainer.className = 'text-container';
@@ -253,6 +346,27 @@ document.addEventListener('DOMContentLoaded', () => {
             actionContainer.appendChild(btn);
         }
 
+        // Favorites Button
+        const isFav = getFavorites().includes(site.id);
+        const favBtn = document.createElement('button');
+        favBtn.className = `btn-action btn-secondary fav-btn`;
+        favBtn.innerHTML = isFav ? '♥ Saved' : '♡ Save to Favorites';
+        if (isFav) favBtn.style.color = 'var(--color-accent)';
+
+        favBtn.onclick = () => {
+            const added = toggleFavorite(site.id);
+            favBtn.innerHTML = added ? '♥ Saved' : '♡ Save to Favorites';
+            favBtn.style.color = added ? 'var(--color-accent)' : 'var(--color-text-primary)';
+
+            // Refresh filter if in favorites view
+            const activeFilterBtn = document.querySelector('.filter-btn.active');
+            if (activeFilterBtn && activeFilterBtn.dataset.category === 'favorites' && !added) {
+                closePanel();
+                filterSites('favorites');
+            }
+        };
+        actionContainer.appendChild(favBtn);
+
         // Share Button
         const shareBtn = document.createElement('button');
         shareBtn.className = 'btn-action btn-secondary share-btn';
@@ -306,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     sites.forEach((site, index) => {
-        const thumbUrl = getResizedImage(site.image, 100);
+        const thumbUrl = getResizedImage(site.images[0], 100);
         // Security: Escape HTML entities to prevent injection in aria-label
         const safeName = escapeHtml(site.name);
 
@@ -511,8 +625,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Filter Logic ---
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('search-input');
 
     const filterSites = (category) => {
+        // Clear search input when filtering
+        if (searchInput) searchInput.value = '';
+
         // Update active button state
         filterBtns.forEach(btn => {
             const isSelected = btn.dataset.category === category;
@@ -520,9 +638,20 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.setAttribute('aria-pressed', isSelected);
         });
 
+        const favs = getFavorites();
         markers.forEach(marker => {
             const site = marker.site;
-            if (category === 'all' || site.category === category) {
+            let visible = false;
+
+            if (category === 'all') {
+                visible = true;
+            } else if (category === 'favorites') {
+                visible = favs.includes(site.id);
+            } else {
+                visible = site.category === category;
+            }
+
+            if (visible) {
                 if (!map.hasLayer(marker)) {
                     marker.addTo(map);
                 }
@@ -534,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Close panel if the active marker is filtered out
-        if (activeMarker && category !== 'all' && activeMarker.site.category !== category) {
+        if (activeMarker && !map.hasLayer(activeMarker)) {
             closePanel();
         }
     };
@@ -544,4 +673,43 @@ document.addEventListener('DOMContentLoaded', () => {
             filterSites(btn.dataset.category);
         });
     });
+
+    // --- Search Logic ---
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+
+            // Remove active state from filter buttons during search
+            filterBtns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+
+            if (query === '') {
+                const allBtn = document.querySelector('.filter-btn[data-category="all"]');
+                if (allBtn) {
+                    allBtn.classList.add('active');
+                    allBtn.setAttribute('aria-pressed', 'true');
+                }
+            }
+
+            markers.forEach(marker => {
+                const site = marker.site;
+                const region = site.region ? site.region.toLowerCase() : '';
+                const matches = site.name.toLowerCase().includes(query) ||
+                                region.includes(query);
+
+                if (matches) {
+                    if (!map.hasLayer(marker)) marker.addTo(map);
+                } else {
+                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                }
+            });
+
+            // If active marker is filtered out, close panel
+            if (activeMarker && !map.hasLayer(activeMarker)) {
+                closePanel();
+            }
+        });
+    }
 });
