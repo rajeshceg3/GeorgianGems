@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pin) pin.setAttribute('aria-expanded', 'true');
     };
 
-    sites.forEach(site => {
+    sites.forEach((site, index) => {
         const thumbUrl = getResizedImage(site.image, 100);
         // Security: Escape HTML entities to prevent injection in aria-label
         const safeName = escapeHtml(site.name);
@@ -318,29 +318,32 @@ document.addEventListener('DOMContentLoaded', () => {
             popupAnchor: [0, -28]
         });
 
-        const marker = L.marker(site.coords, { icon: customIcon }).addTo(map);
-        marker.site = site; // Attach site data to marker for reference
-        markers.push(marker);
+        // Stagger marker creation
+        setTimeout(() => {
+            const marker = L.marker(site.coords, { icon: customIcon }).addTo(map);
+            marker.site = site; // Attach site data to marker for reference
+            markers.push(marker);
 
-        marker.on('click', (e) => {
-            activateMarker(site, marker);
-            L.DomEvent.stopPropagation(e);
-        });
+            marker.on('click', (e) => {
+                activateMarker(site, marker);
+                L.DomEvent.stopPropagation(e);
+            });
 
-        // Add keyboard support (Enter/Space)
-        marker.on('add', () => {
-            const el = marker.getElement();
-            const pin = el.querySelector('.marker-pin');
-            if (pin) {
-                L.DomEvent.on(pin, 'keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault(); // Prevent scrolling for Space
-                        activateMarker(site, marker);
-                        L.DomEvent.stopPropagation(e);
-                    }
-                });
-            }
-        });
+            // Add keyboard support (Enter/Space)
+            marker.on('add', () => {
+                const el = marker.getElement();
+                const pin = el.querySelector('.marker-pin');
+                if (pin) {
+                    L.DomEvent.on(pin, 'keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault(); // Prevent scrolling for Space
+                            activateMarker(site, marker);
+                            L.DomEvent.stopPropagation(e);
+                        }
+                    });
+                }
+            });
+        }, index * 200); // 200ms stagger delay
     });
 
     const closePanel = () => {
@@ -431,7 +434,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Swipe-to-Close Logic
     let touchStartY = 0;
     let currentY = 0;
-    const swipeThreshold = 120;
+    let touchStartTime = 0;
+    const swipeThreshold = 100;
+    const velocityThreshold = 0.5; // px/ms
 
     const handleTouchStart = (e) => {
         if (window.innerWidth >= 768) return;
@@ -439,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (infoContent.scrollTop > 0) return;
 
         touchStartY = e.touches[0].clientY;
+        touchStartTime = Date.now();
         infoPanel.style.transition = 'none';
     };
 
@@ -454,17 +460,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentY = e.touches[0].clientY;
         const deltaY = currentY - touchStartY;
 
-        // Apply resistance
         let translateY = deltaY;
 
         if (deltaY < 0) {
-            // Dragging up
-            if (infoContent.scrollHeight > infoContent.clientHeight) {
-                 // Content is scrollable, let native scroll handle it
-                 return;
-            }
-            // Not scrollable, apply resistance overshoot
-            translateY = deltaY * 0.25;
+            // Dragging up (overshoot)
+            // Apply stronger resistance: sqrt scale
+            translateY = -1 * Math.sqrt(Math.abs(deltaY)) * 4;
         }
         // Dragging down is 1:1 for natural feel
 
@@ -483,20 +484,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.innerWidth >= 768) return;
         if (infoContent.scrollTop > 0 && touchStartY === 0) return; // didn't start valid drag
 
-        infoPanel.style.transition = ''; // Restore CSS transition
-        const deltaY = currentY - touchStartY;
+        // Add bounce-back transition
+        infoPanel.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-        if (deltaY > swipeThreshold && touchStartY !== 0) {
+        const deltaY = currentY - touchStartY;
+        const deltaTime = Date.now() - touchStartTime;
+        const velocity = Math.abs(deltaY) / deltaTime;
+
+        // Close if dragged far enough OR flicked fast enough downwards
+        if ((deltaY > swipeThreshold) || (deltaY > 20 && velocity > velocityThreshold)) {
             closePanel();
-            // Reset inline transform after animation (handled by closePanel removing .visible)
-            // But closePanel triggers a map flyTo.
-            // We need to ensure the panel slides down.
-            // Removing .visible will trigger the CSS transition to 105%.
-            // But we currently have an inline transform.
-            // We should clear the inline transform to let CSS take over.
             setTimeout(() => {
                 infoPanel.style.transform = '';
-            }, 50);
+            }, 400);
         } else {
              // Snap back
              infoPanel.style.transform = '';
