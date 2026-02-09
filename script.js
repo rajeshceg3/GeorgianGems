@@ -12,6 +12,7 @@ const sites = [
         category: 'Cultural',
         region: 'Mtskheta-Mtianeti',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.8425,44.7214',
+        highlights: ['Svetitskhoveli Cathedral', 'Jvari Monastery', 'Ancient Capital'],
         visitorInfo: {
             hours: '10:00 - 18:00 (Daily)',
             cost: 'Free (Jvari), ~15 GEL (Svetitskhoveli)'
@@ -32,6 +33,7 @@ const sites = [
         category: 'Cultural',
         region: 'Samegrelo-Zemo Svaneti',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=43.0456,42.7289',
+        highlights: ['Svan Towers', 'Highest Settlement in Europe (Ushguli)', 'Epic Hiking Trails'],
         visitorInfo: {
             hours: '24/7 (Region)',
             cost: 'Free (Nature), Museums ~10 GEL'
@@ -52,6 +54,7 @@ const sites = [
         category: 'Cultural',
         region: 'Imereti',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.2925,42.7714',
+        highlights: ['Golden Age Architecture', 'Medieval Academy', 'Mosaic Masterpieces'],
         visitorInfo: {
             hours: '10:00 - 18:00',
             cost: 'Free entry'
@@ -72,6 +75,7 @@ const sites = [
         category: 'Natural',
         region: 'Guria / Adjara',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.12,41.70',
+        highlights: ['Ancient Rainforests', 'Birdwatching', 'Paliastomi Lake'],
         visitorInfo: {
             hours: '09:00 - 18:00 (Visitor Center)',
             cost: 'Boat tours ~30-50 GEL'
@@ -92,6 +96,7 @@ const sites = [
         category: 'Cultural',
         region: 'Samtskhe-Javakheti',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.3813,43.2843',
+        highlights: ['13-tiered cave system', 'Church of the Dormition', 'Hidden tunnels'],
         visitorInfo: {
             hours: '10:00 - 19:00',
             cost: 'Adults ~15 GEL'
@@ -112,6 +117,7 @@ const sites = [
         category: 'Cultural',
         region: 'Shida Kartli',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.9673,44.2078',
+        highlights: ['Pre-Christian Caves', 'Hellenistic Theatre', 'Queen Tamar\'s Hall'],
         visitorInfo: {
             hours: '10:00 - 18:00',
             cost: 'Adults ~15 GEL'
@@ -132,12 +138,118 @@ const sites = [
         category: 'Cultural',
         region: 'Kakheti',
         googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.4475,45.3764',
+        highlights: ['Rainbow Hills', 'Semi-desert Landscape', 'Ancient Frescoes'],
         visitorInfo: {
             hours: 'Daylight hours',
             cost: 'Free'
         },
         bestTime: 'Spring (when the desert blooms)',
         tips: 'Bring plenty of water and sun protection as it gets very hot.'
+    },
+    {
+        id: 'gergeti',
+        name: 'Gergeti Trinity Church',
+        coords: [42.6627, 44.6206],
+        images: [
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Gergeti_Trinity_Church_and_Mt._Kazbeg_01.jpg/1280px-Gergeti_Trinity_Church_and_Mt._Kazbeg_01.jpg',
+            'https://images.unsplash.com/photo-1565008576549-57569a49371d?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Perched at an elevation of 2,170 meters under Mount Kazbek, the 14th-century Gergeti Trinity Church is the only cross-cupola church in Khevi province. Its isolated location on top of a steep mountain surrounded by the vastness of nature has made it a symbol for Georgia.',
+        year: 2007,
+        category: 'Cultural',
+        region: 'Mtskheta-Mtianeti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.6627,44.6206',
+        highlights: ['Iconic Mountain View', 'Mt. Kazbek Backdrop', 'High-altitude Trekking'],
+        visitorInfo: {
+            hours: '09:00 - 18:00',
+            cost: 'Free'
+        },
+        bestTime: 'June to September',
+        tips: 'Hike up from Stepantsminda (1.5-2 hours) for the full experience, or take a 4x4 taxi.'
+    },
+    {
+        id: 'prometheus',
+        name: 'Prometheus Cave',
+        coords: [42.3765, 42.6007],
+        images: [
+            'https://images.unsplash.com/photo-1516934024742-b461fba47600?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1504280506541-aca43f24e251?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Discovered in 1984, Prometheus Cave is one of Georgia\'s natural wonders. The 1.4km walking route takes visitors through a series of six breathtaking halls filled with stalactites, stalagmites, petrified waterfalls, and underground rivers, all illuminated by spectacular colored lights.',
+        year: 2007,
+        category: 'Natural',
+        region: 'Imereti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.3765,42.6007',
+        highlights: ['Underground River', 'Laser Light Show', 'Boat Tour Exit'],
+        visitorInfo: {
+            hours: '10:00 - 17:00 (Closed Mondays)',
+            cost: 'Adults ~23 GEL'
+        },
+        bestTime: 'All year round (constant temperature)',
+        tips: 'Opt for the boat tour at the end to exit the cave via the underground river.'
+    },
+    {
+        id: 'martvili',
+        name: 'Martvili Canyon',
+        coords: [42.4573, 42.3775],
+        images: [
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Martvili_Canyon_Natural_Monument3.jpg/1280px-Martvili_Canyon_Natural_Monument3.jpg',
+            'https://images.unsplash.com/photo-1500382017468-9049fed747ef?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Martvili Canyon is a natural wonder where the Abasha River has cut a deep gorge through limestone rocks. The canyon features emerald-green waters, cascading waterfalls, and fossilized bones of prehistoric animals found in the area.',
+        year: 2010,
+        category: 'Natural',
+        region: 'Samegrelo-Zemo Svaneti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.4573,42.3775',
+        highlights: ['Emerald Waters', 'Boat Trip', '70m Waterfalls'],
+        visitorInfo: {
+            hours: '10:00 - 17:30 (Closed Mondays)',
+            cost: 'Entry ~17 GEL + Boat ~15 GEL'
+        },
+        bestTime: 'Late Spring to Early Autumn',
+        tips: 'The boat trip is short but essential. Arrive early to beat the tour buses.'
+    },
+    {
+        id: 'ananuri',
+        name: 'Ananuri Fortress',
+        coords: [42.1634, 44.7038],
+        images: [
+            'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1572979245229-87389c937190?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Ananuri is a castle complex on the Aragvi River in Georgia, about 45 miles from Tbilisi. Built by the Dukes of Aragvi, its earliest parts date from the 13th century. The complex overlooks the turquoise waters of the Zhinvali Reservoir, creating a stunning contrast.',
+        year: 2007,
+        category: 'Cultural',
+        region: 'Mtskheta-Mtianeti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.1634,44.7038',
+        highlights: ['Zhinvali Reservoir View', '17th Century Fortress', 'Carved Facades'],
+        visitorInfo: {
+            hours: '09:00 - 20:00',
+            cost: 'Free'
+        },
+        bestTime: 'Spring or Autumn',
+        tips: 'Stop here on your way to Kazbegi. The view from the bridge is the best photo spot.'
+    },
+    {
+        id: 'sighnaghi',
+        name: 'Sighnaghi',
+        coords: [41.6198, 45.9213],
+        images: [
+            'https://images.unsplash.com/photo-1596306499300-0b7b1689b9e6?fm=jpg&q=80&w=2000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop'
+        ],
+        description: 'Known as the "City of Love", Sighnaghi is a charming town in Georgia\'s wine region of Kakheti. It is surrounded by 18th-century defensive walls with 23 towers and offers breathtaking views of the Alazani Valley and the Greater Caucasus mountains.',
+        year: 2007,
+        category: 'Cultural',
+        region: 'Kakheti',
+        googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.6198,45.9213',
+        highlights: ['City Walls', 'Alazani Valley View', 'Bodbe Monastery Nearby'],
+        visitorInfo: {
+            hours: '24/7 (Town)',
+            cost: 'Free'
+        },
+        bestTime: 'September-October (Vintage Season)',
+        tips: 'Walk along the city walls for the best panoramic views of the valley.'
     }
 ];
 
@@ -210,6 +322,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return url;
     };
 
+    // --- Helper Functions for Distance ---
+    const toRad = (value) => value * Math.PI / 180;
+
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // km
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
+
+    const getNearbySites = (currentSite, allSites) => {
+        return allSites
+            .filter(s => s.id !== currentSite.id)
+            .map(s => {
+                const dist = calculateDistance(
+                    currentSite.coords[0], currentSite.coords[1],
+                    s.coords[0], s.coords[1]
+                );
+                return { ...s, distance: dist };
+            })
+            .sort((a, b) => a.distance - b.distance)
+            .slice(0, 2);
+    };
+
     // --- Favorites Logic ---
     const getFavorites = () => {
         try {
@@ -269,6 +409,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const imageContainer = document.createElement('div');
         imageContainer.className = 'image-container gallery-container';
+        imageContainer.setAttribute('role', 'region');
+        imageContainer.setAttribute('aria-label', 'Image Gallery');
 
         site.images.forEach((url, idx) => {
             const img = document.createElement('img');
@@ -304,8 +446,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (site.category) metaContainer.appendChild(createMetaItem('Category', site.category));
         if (site.region) metaContainer.appendChild(createMetaItem('Region', site.region));
 
+        textContainer.appendChild(h2);
+        textContainer.appendChild(metaContainer);
+
+        // Highlights
+        if (site.highlights && site.highlights.length > 0) {
+            const highlightsContainer = document.createElement('div');
+            highlightsContainer.className = 'highlights-container';
+            const h3 = document.createElement('h3');
+            h3.className = 'section-title';
+            h3.textContent = 'Key Highlights';
+            highlightsContainer.appendChild(h3);
+
+            const ul = document.createElement('ul');
+            ul.className = 'highlights-list';
+            site.highlights.forEach(highlight => {
+                const li = document.createElement('li');
+                li.className = 'highlight-item';
+                li.textContent = highlight;
+                ul.appendChild(li);
+            });
+            highlightsContainer.appendChild(ul);
+            textContainer.appendChild(highlightsContainer);
+        }
+
         const p = document.createElement('p');
         p.textContent = site.description;
+        textContainer.appendChild(p);
 
         // Visitor Info Grid
         const infoGrid = document.createElement('div');
@@ -324,12 +491,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (site.bestTime) infoGrid.appendChild(createInfoCard('Best Time', site.bestTime));
 
+        if (infoGrid.hasChildNodes()) textContainer.appendChild(infoGrid);
+
         // Insider Tip
         let tipBox = null;
         if (site.tips) {
             tipBox = document.createElement('div');
             tipBox.className = 'insider-tip';
             tipBox.innerHTML = `<span class="tip-icon">✦</span><div class="tip-content"><strong>Insider Tip</strong><br>${site.tips}</div>`;
+            textContainer.appendChild(tipBox);
         }
 
         // Action Container
@@ -388,14 +558,58 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         actionContainer.appendChild(shareBtn);
 
-        textContainer.appendChild(h2);
-        textContainer.appendChild(metaContainer);
-        textContainer.appendChild(p);
-
-        if (infoGrid.hasChildNodes()) textContainer.appendChild(infoGrid);
-        if (tipBox) textContainer.appendChild(tipBox);
-
         textContainer.appendChild(actionContainer);
+
+        // Nearby Gems Section
+        const nearby = getNearbySites(site, sites);
+        if (nearby.length > 0) {
+            const nearbyContainer = document.createElement('div');
+            nearbyContainer.className = 'nearby-container';
+            const h3 = document.createElement('h3');
+            h3.className = 'section-title';
+            h3.textContent = 'Nearby Gems';
+            nearbyContainer.appendChild(h3);
+
+            const nearbyGrid = document.createElement('div');
+            nearbyGrid.className = 'nearby-grid';
+
+            nearby.forEach(ns => {
+                const card = document.createElement('div');
+                card.className = 'nearby-card';
+                card.role = 'button';
+                card.tabIndex = 0;
+
+                const thumb = getResizedImage(ns.images[0], 200);
+
+                card.innerHTML = `
+                    <div class="nearby-img" style="background-image: url('${thumb}')"></div>
+                    <div class="nearby-info">
+                        <div class="nearby-title">${ns.name}</div>
+                        <div class="nearby-dist">${Math.round(ns.distance)} km away</div>
+                    </div>
+                `;
+
+                card.onclick = () => {
+                    // Find marker for this site
+                    const targetMarker = markers.find(m => m.site.id === ns.id);
+                    if (targetMarker) {
+                         activateMarker(ns, targetMarker);
+                    }
+                };
+                // Keyboard support
+                card.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                         const targetMarker = markers.find(m => m.site.id === ns.id);
+                        if (targetMarker) activateMarker(ns, targetMarker);
+                    }
+                };
+
+                nearbyGrid.appendChild(card);
+            });
+            nearbyContainer.appendChild(nearbyGrid);
+            textContainer.appendChild(nearbyContainer);
+        }
 
         wrapper.appendChild(imageContainer);
         wrapper.appendChild(textContainer);

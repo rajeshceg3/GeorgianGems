@@ -957,3 +957,128 @@ body::after {
         width: 140px;
     }
 }
+
+/* --- Highlights Section --- */
+
+.highlights-container {
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    opacity: 0;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.28s;
+}
+
+.section-title {
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin: 0 0 12px 0;
+}
+
+.highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.highlight-item {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.highlight-item::before {
+    content: '✓';
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* --- Nearby Gems Section --- */
+
+.nearby-container {
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.45s;
+}
+
+.nearby-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.nearby-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s var(--ease-out-cubic);
+    box-shadow: var(--shadow-sm);
+}
+
+.nearby-card:hover {
+    transform: translateY(-4px);
+    background: #fff;
+    box-shadow: var(--shadow-md);
+}
+
+.nearby-card:active {
+    transform: scale(0.98);
+}
+
+.nearby-img {
+    height: 100px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #ddd;
+}
+
+.nearby-info {
+    padding: 12px;
+}
+
+.nearby-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nearby-dist {
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nearby-dist::before {
+    content: '↗'; /* Arrow icon */
+    font-size: 1rem;
+}
+
+@media (max-width: 400px) {
+    .nearby-grid {
+        grid-template-columns: 1fr;
+    }
+    .nearby-img {
+        height: 140px;
+    }
+}
