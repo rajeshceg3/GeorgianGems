@@ -18,7 +18,12 @@ const sites = [
             cost: 'Free (Jvari), ~15 GEL (Svetitskhoveli)'
         },
         bestTime: 'April-May or September-October',
-        tips: 'Visit Jvari Monastery at sunset for the iconic view of the river confluence.'
+        tips: 'Visit Jvari Monastery at sunset for the iconic view of the river confluence.',
+        logistics: {
+            transport: 'Minibus from Didube (~20 mins)',
+            duration: 'Half Day',
+            accessibility: 'Moderate (Cobblestones)'
+        }
     },
     {
         id: 'svaneti',
@@ -39,7 +44,12 @@ const sites = [
             cost: 'Free (Nature), Museums ~10 GEL'
         },
         bestTime: 'June-September for hiking',
-        tips: 'The road to Ushguli requires a 4x4 vehicle. Allow at least 3-4 days to explore properly.'
+        tips: 'The road to Ushguli requires a 4x4 vehicle. Allow at least 3-4 days to explore properly.',
+        logistics: {
+            transport: 'Flight to Mestia (45m) or Drive (8h)',
+            duration: '3-4 Days',
+            accessibility: 'Challenging (Mountain terrain)'
+        }
     },
     {
         id: 'gelati',
@@ -60,7 +70,12 @@ const sites = [
             cost: 'Free entry'
         },
         bestTime: 'Late spring or early autumn',
-        tips: 'Look up to see the magnificent mosaics in the apse, especially the Virgin and Child.'
+        tips: 'Look up to see the magnificent mosaics in the apse, especially the Virgin and Child.',
+        logistics: {
+            transport: 'Taxi from Kutaisi (~20 mins)',
+            duration: '1-2 Hours',
+            accessibility: 'Moderate'
+        }
     },
     {
         id: 'colchis',
@@ -81,7 +96,12 @@ const sites = [
             cost: 'Boat tours ~30-50 GEL'
         },
         bestTime: 'Spring and Autumn (Migration seasons)',
-        tips: 'Take a boat tour on Paliastomi Lake for the best birdwatching experience.'
+        tips: 'Take a boat tour on Paliastomi Lake for the best birdwatching experience.',
+        logistics: {
+            transport: 'Car/Taxi from Batumi (~1h)',
+            duration: 'Half Day',
+            accessibility: 'Boat tours available'
+        }
     },
     {
         id: 'vardzia',
@@ -102,7 +122,12 @@ const sites = [
             cost: 'Adults ~15 GEL'
         },
         bestTime: 'Spring or early Autumn',
-        tips: 'Wear comfortable shoes as there are many steps and uneven surfaces.'
+        tips: 'Wear comfortable shoes as there are many steps and uneven surfaces.',
+        logistics: {
+            transport: 'Minibus from Akhaltsikhe (1.5h)',
+            duration: '3-4 Hours',
+            accessibility: 'Not accessible (Steep stairs)'
+        }
     },
     {
         id: 'uplistsikhe',
@@ -123,7 +148,12 @@ const sites = [
             cost: 'Adults ~15 GEL'
         },
         bestTime: 'April to October',
-        tips: 'Visit early in the morning to avoid the heat and crowds.'
+        tips: 'Visit early in the morning to avoid the heat and crowds.',
+        logistics: {
+            transport: 'Minibus from Gori (~20 mins)',
+            duration: '2 Hours',
+            accessibility: 'Difficult (Rock stairs)'
+        }
     },
     {
         id: 'david_gareji',
@@ -144,7 +174,12 @@ const sites = [
             cost: 'Free'
         },
         bestTime: 'Spring (when the desert blooms)',
-        tips: 'Bring plenty of water and sun protection as it gets very hot.'
+        tips: 'Bring plenty of water and sun protection as it gets very hot.',
+        logistics: {
+            transport: 'Shuttle/Tour from Tbilisi (3h one way)',
+            duration: 'Full Day',
+            accessibility: 'Challenging hike'
+        }
     },
     {
         id: 'gergeti',
@@ -165,7 +200,12 @@ const sites = [
             cost: 'Free'
         },
         bestTime: 'June to September',
-        tips: 'Hike up from Stepantsminda (1.5-2 hours) for the full experience, or take a 4x4 taxi.'
+        tips: 'Hike up from Stepantsminda (1.5-2 hours) for the full experience, or take a 4x4 taxi.',
+        logistics: {
+            transport: 'Minibus to Stepantsminda (3h)',
+            duration: 'Full Day',
+            accessibility: '4x4 Access available'
+        }
     },
     {
         id: 'prometheus',
@@ -186,7 +226,12 @@ const sites = [
             cost: 'Adults ~23 GEL'
         },
         bestTime: 'All year round (constant temperature)',
-        tips: 'Opt for the boat tour at the end to exit the cave via the underground river.'
+        tips: 'Opt for the boat tour at the end to exit the cave via the underground river.',
+        logistics: {
+            transport: 'Minibus from Kutaisi (~30 mins)',
+            duration: '1.5 Hours',
+            accessibility: 'Good (Walkways)'
+        }
     },
     {
         id: 'martvili',
@@ -207,7 +252,12 @@ const sites = [
             cost: 'Entry ~17 GEL + Boat ~15 GEL'
         },
         bestTime: 'Late Spring to Early Autumn',
-        tips: 'The boat trip is short but essential. Arrive early to beat the tour buses.'
+        tips: 'The boat trip is short but essential. Arrive early to beat the tour buses.',
+        logistics: {
+            transport: 'Minibus from Kutaisi (~1h)',
+            duration: '2 Hours',
+            accessibility: 'Partial (Stairs to boat)'
+        }
     },
     {
         id: 'ananuri',
@@ -228,7 +278,12 @@ const sites = [
             cost: 'Free'
         },
         bestTime: 'Spring or Autumn',
-        tips: 'Stop here on your way to Kazbegi. The view from the bridge is the best photo spot.'
+        tips: 'Stop here on your way to Kazbegi. The view from the bridge is the best photo spot.',
+        logistics: {
+            transport: 'Minibus from Didube (1h)',
+            duration: '45 Mins',
+            accessibility: 'Moderate (Uneven ground)'
+        }
     },
     {
         id: 'sighnaghi',
@@ -249,7 +304,29 @@ const sites = [
             cost: 'Free'
         },
         bestTime: 'September-October (Vintage Season)',
-        tips: 'Walk along the city walls for the best panoramic views of the valley.'
+        tips: 'Walk along the city walls for the best panoramic views of the valley.',
+        logistics: {
+            transport: 'Minibus from Samgori (2h)',
+            duration: 'Day Trip / Overnight',
+            accessibility: 'Good (Paved streets)'
+        }
+    }
+];
+
+const journeys = [
+    {
+        id: 'royal_path',
+        name: 'The Royal Path',
+        sites: ['mtskheta', 'ananuri', 'uplistsikhe', 'vardzia'],
+        color: '#9e1b21',
+        description: 'Trace the steps of Kings and Queens through ancient capitals, fortresses, and cave cities.'
+    },
+    {
+        id: 'wild_horizons',
+        name: 'Wild Horizons',
+        sites: ['martvili', 'prometheus', 'svaneti', 'colchis'],
+        color: '#2d6a4f',
+        description: 'Immerse yourself in the untouched natural beauty of Western Georgia.'
     }
 ];
 
@@ -298,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let lastFocusedElement = null;
     let activeMarker = null;
+    let currentPolyline = null;
 
     const markers = [];
 
@@ -371,6 +449,62 @@ document.addEventListener('DOMContentLoaded', () => {
         return index === -1; // returns true if added, false if removed
     };
 
+    const startJourney = (journeyId) => {
+        const journey = journeys.find(j => j.id === journeyId);
+        if (!journey) return;
+
+        // Reset UI
+        closePanel();
+        if (searchInput) searchInput.value = '';
+
+        // Deselect filter buttons
+        filterBtns.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+        });
+
+        // Clear existing polyline
+        if (currentPolyline) {
+            map.removeLayer(currentPolyline);
+            currentPolyline = null;
+        }
+
+        const journeySiteIds = journey.sites;
+
+        // Filter markers
+        markers.forEach(marker => {
+            if (journeySiteIds.includes(marker.site.id)) {
+                if (!map.hasLayer(marker)) marker.addTo(map);
+            } else {
+                if (map.hasLayer(marker)) map.removeLayer(marker);
+            }
+        });
+
+        // Get coordinates in order
+        const orderedLatLngs = journeySiteIds.map(id => {
+            const marker = markers.find(m => m.site.id === id);
+            return marker ? marker.getLatLng() : null;
+        }).filter(ll => ll !== null);
+
+        // Draw Polyline
+        currentPolyline = L.polyline(orderedLatLngs, {
+            color: journey.color,
+            weight: 3,
+            opacity: 0.8,
+            dashArray: '5, 10',
+            lineCap: 'round',
+            className: 'journey-line'
+        }).addTo(map);
+
+        // Fit Bounds
+        if (orderedLatLngs.length > 0) {
+            map.fitBounds(currentPolyline.getBounds(), { padding: [50, 50], maxZoom: 12 });
+        }
+    };
+
+    // Expose startJourney globally for UI calls
+    window.startJourney = startJourney;
+
     const centerMapOnSite = (site) => {
         const isMobile = window.innerWidth < 768;
         let targetZoom = 14; // Slightly closer zoom
@@ -397,6 +531,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Capture currently focused element to restore later
         lastFocusedElement = document.activeElement;
         activeMarker = marker;
+
+        // Set dynamic accent color based on category
+        const accentColor = site.category === 'Natural' ? '#2d6a4f' : '#9e1b21';
+        const accentGlow = site.category === 'Natural' ? 'rgba(45, 106, 79, 0.35)' : 'rgba(158, 27, 33, 0.35)';
+        infoPanel.style.setProperty('--color-accent', accentColor);
+        infoPanel.style.setProperty('--color-accent-glow', accentGlow);
 
         centerMapOnSite(site);
 
@@ -492,6 +632,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (site.bestTime) infoGrid.appendChild(createInfoCard('Best Time', site.bestTime));
 
         if (infoGrid.hasChildNodes()) textContainer.appendChild(infoGrid);
+
+        // Travel Essentials (Logistics)
+        if (site.logistics) {
+            const logisticsContainer = document.createElement('div');
+            logisticsContainer.className = 'logistics-container';
+
+            const h3 = document.createElement('h3');
+            h3.className = 'section-title';
+            h3.textContent = 'Travel Essentials';
+            logisticsContainer.appendChild(h3);
+
+            const grid = document.createElement('div');
+            grid.className = 'logistics-grid';
+
+            const createLogisticsItem = (icon, label, value) => {
+                 const item = document.createElement('div');
+                 item.className = 'logistics-item';
+                 item.innerHTML = `<span class="logistics-icon">${icon}</span><div><span class="logistics-label">${label}</span><span class="logistics-value">${value}</span></div>`;
+                 return item;
+            };
+
+            if (site.logistics.transport) grid.appendChild(createLogisticsItem('🚌', 'Transport', site.logistics.transport));
+            if (site.logistics.duration) grid.appendChild(createLogisticsItem('⏱', 'Duration', site.logistics.duration));
+            if (site.logistics.accessibility) grid.appendChild(createLogisticsItem('♿', 'Accessibility', site.logistics.accessibility));
+
+            logisticsContainer.appendChild(grid);
+            textContainer.appendChild(logisticsContainer);
+        }
 
         // Insider Tip
         let tipBox = null;
@@ -637,10 +805,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbUrl = getResizedImage(site.images[0], 100);
         // Security: Escape HTML entities to prevent injection in aria-label
         const safeName = escapeHtml(site.name);
+        const categoryClass = site.category ? site.category.toLowerCase() : '';
 
         const customIcon = L.divIcon({
             className: 'custom-marker',
-            html: `<div class='marker-pin' role='button' tabindex='0' aria-label='${safeName}' aria-expanded='false'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
+            html: `<div class='marker-pin ${categoryClass}' role='button' tabindex='0' aria-label='${safeName}' aria-expanded='false'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
             iconSize: [48, 48],
             iconAnchor: [24, 24], // Center of the circular marker
             popupAnchor: [0, -28]
@@ -842,8 +1011,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
 
     const filterSites = (category) => {
-        // Clear search input when filtering
+        // Clear search input and polyline
         if (searchInput) searchInput.value = '';
+        if (currentPolyline) {
+            map.removeLayer(currentPolyline);
+            currentPolyline = null;
+        }
 
         // Update active button state
         filterBtns.forEach(btn => {
@@ -893,6 +1066,11 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.trim().toLowerCase();
 
+            if (currentPolyline) {
+                map.removeLayer(currentPolyline);
+                currentPolyline = null;
+            }
+
             // Remove active state from filter buttons during search
             filterBtns.forEach(btn => {
                 btn.classList.remove('active');
@@ -924,6 +1102,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (activeMarker && !map.hasLayer(activeMarker)) {
                 closePanel();
             }
+        });
+    }
+
+    // --- Journey Menu Logic ---
+    const journeyBtn = document.getElementById('journey-btn');
+    const journeyMenu = document.getElementById('journey-menu');
+    const journeyOptions = document.querySelectorAll('.journey-option');
+
+    if (journeyBtn && journeyMenu) {
+        journeyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isExpanded = journeyBtn.getAttribute('aria-expanded') === 'true';
+            journeyBtn.setAttribute('aria-expanded', !isExpanded);
+            journeyMenu.classList.toggle('visible');
+            journeyMenu.setAttribute('aria-hidden', isExpanded);
+        });
+
+        // Close menu on click outside
+        document.addEventListener('click', (e) => {
+            if (!journeyBtn.contains(e.target) && !journeyMenu.contains(e.target)) {
+                journeyBtn.setAttribute('aria-expanded', 'false');
+                journeyMenu.classList.remove('visible');
+                journeyMenu.setAttribute('aria-hidden', 'true');
+            }
+        });
+
+        journeyOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                const journeyId = opt.dataset.journey;
+                startJourney(journeyId);
+
+                // Close menu
+                journeyBtn.setAttribute('aria-expanded', 'false');
+                journeyMenu.classList.remove('visible');
+                journeyMenu.setAttribute('aria-hidden', 'true');
+            });
         });
     }
 });
