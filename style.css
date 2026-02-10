@@ -14,6 +14,9 @@
     --color-accent-dark: #7a1519;
     --color-accent-glow: rgba(158, 27, 33, 0.35);
 
+    --color-accent-natural: #2d6a4f;
+    --color-accent-natural-glow: rgba(45, 106, 79, 0.35);
+
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.02);
     --shadow-md: 0 8px 16px -4px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
     --shadow-lg: 0 24px 48px -12px rgba(0,0,0,0.18), 0 12px 24px -8px rgba(0,0,0,0.08);
@@ -1080,5 +1083,143 @@ body::after {
     }
     .nearby-img {
         height: 140px;
+    }
+}
+
+/* --- Natural Marker Theme --- */
+
+.marker-pin.natural .marker-img {
+    background-color: var(--color-accent-natural);
+}
+
+.custom-marker.selected .marker-pin.natural {
+    box-shadow: var(--shadow-lg), 0 0 0 4px var(--color-surface-solid), 0 0 0 6px var(--color-accent-natural);
+}
+
+.custom-marker.selected .marker-pin.natural::before,
+.custom-marker.selected .marker-pin.natural::after {
+    background: var(--color-accent-natural);
+}
+
+/* --- Journey UI --- */
+
+.journey-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.journey-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 220px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    z-index: 1001;
+}
+
+.journey-menu.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.journey-option {
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.journey-option:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--color-text-primary);
+    transform: translateX(4px);
+}
+
+/* --- Travel Essentials (Logistics) --- */
+
+.logistics-container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    animation: fadeSlideUp 0.9s var(--ease-out-cubic) forwards 0.32s;
+}
+
+.logistics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.logistics-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.logistics-icon {
+    font-size: 1.2rem;
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+    color: var(--color-text-secondary);
+}
+
+.logistics-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.logistics-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+
+/* --- Journey Polyline Animation --- */
+
+.journey-line {
+    animation: dash 60s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -1000;
     }
 }
