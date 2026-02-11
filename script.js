@@ -2,6 +2,7 @@ const sites = [
     {
         id: 'mtskheta',
         name: 'Historical Monuments of Mtskheta',
+        legend: 'Legend has it that the seamless Robe of Jesus is buried beneath the Svetitskhoveli Cathedral, brought from Jerusalem by a Georgian Jew named Elias.',
         coords: [41.8425, 44.7214],
         images: [
             'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -28,6 +29,7 @@ const sites = [
     {
         id: 'svaneti',
         name: 'Upper Svaneti',
+        legend: 'Local folklore speaks of the goddess Dali, the divine huntress who watched over the mountain ibex from these very peaks, punishing hunters who took more than their need.',
         coords: [43.0456, 42.7289],
         images: [
             'https://images.unsplash.com/photo-1714316457727-4ba836ee61ca?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -54,6 +56,7 @@ const sites = [
     {
         id: 'gelati',
         name: 'Gelati Monastery',
+        legend: 'King David the Builder, Georgia\'s greatest ruler, is buried in the gateway here. He requested this so that every person entering the monastery would step on his grave, an act of ultimate humility.',
         coords: [42.2925, 42.7714],
         images: [
             'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -80,6 +83,7 @@ const sites = [
     {
         id: 'colchis',
         name: 'Colchic Rainforests and Wetlands',
+        legend: 'This land is the legendary Kingdom of Colchis, where Jason and the Argonauts sought the Golden Fleece, aided by the sorceress Medea.',
         coords: [42.12, 41.70],
         images: [
             'https://images.unsplash.com/photo-1715258400290-c095d69ac3e0?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -106,6 +110,7 @@ const sites = [
     {
         id: 'vardzia',
         name: 'Vardzia Cave Monastery',
+        legend: 'The name comes from a childhood story of Queen Tamar. Lost in the caves, she called out "Aq var, dzia" (I am here, uncle!), giving the site its name.',
         coords: [41.3813, 43.2843],
         images: [
             'https://images.unsplash.com/photo-1714316457727-4ba836ee61ca?fm=jpg&q=80&w=2000&auto=format&fit=crop', // Reused Svaneti
@@ -132,6 +137,7 @@ const sites = [
     {
         id: 'uplistsikhe',
         name: 'Uplistsikhe Cave Town',
+        legend: 'As a pagan stronghold, this city was dedicated to the Sun Goddess before Christianity arrived. It is said that secret tunnels here were used for sacred rituals long forgotten.',
         coords: [41.9673, 44.2078],
         images: [
             'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop', // Reused Mtskheta
@@ -158,6 +164,7 @@ const sites = [
     {
         id: 'david_gareji',
         name: 'David Gareji Monasteries',
+        legend: 'St. David brought a stone from Jerusalem that held one-third of the city\'s grace. He was told to return it, but allowed to keep a third, making this site spiritually equal to Jerusalem.',
         coords: [41.4475, 45.3764],
         images: [
             'https://images.unsplash.com/photo-1712843864936-ee5bdf3b9624?fm=jpg&q=80&w=2000&auto=format&fit=crop', // Reused Gelati
@@ -184,6 +191,7 @@ const sites = [
     {
         id: 'gergeti',
         name: 'Gergeti Trinity Church',
+        legend: 'During times of invasion, the precious cross of St. Nino and the treasures of Mtskheta were brought up to this isolated peak for safekeeping, protected by the clouds.',
         coords: [42.6627, 44.6206],
         images: [
             'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Gergeti_Trinity_Church_and_Mt._Kazbeg_01.jpg/1280px-Gergeti_Trinity_Church_and_Mt._Kazbeg_01.jpg',
@@ -210,6 +218,7 @@ const sites = [
     {
         id: 'prometheus',
         name: 'Prometheus Cave',
+        legend: 'This cave is linked to the myth of Amirani, the Georgian prototype of Prometheus. He was chained to a rock in the Caucasus mountains for defying the gods and giving fire to humanity.',
         coords: [42.3765, 42.6007],
         images: [
             'https://images.unsplash.com/photo-1516934024742-b461fba47600?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -236,6 +245,7 @@ const sites = [
     {
         id: 'martvili',
         name: 'Martvili Canyon',
+        legend: 'In ancient times, this was a pagan site where the Dadiani nobles would bathe in the emerald waters, believing they possessed healing powers.',
         coords: [42.4573, 42.3775],
         images: [
             'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Martvili_Canyon_Natural_Monument3.jpg/1280px-Martvili_Canyon_Natural_Monument3.jpg',
@@ -262,6 +272,7 @@ const sites = [
     {
         id: 'ananuri',
         name: 'Ananuri Fortress',
+        legend: 'A tragic legend tells of a tunnel blocked by enemies. A woman named Ana from Nuri refused to reveal the secret water supply, dying to save the fortress. Hence "Ana-Nuri".',
         coords: [42.1634, 44.7038],
         images: [
             'https://images.unsplash.com/photo-1714314172273-403b590972b7?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -288,6 +299,7 @@ const sites = [
     {
         id: 'sighnaghi',
         name: 'Sighnaghi',
+        legend: 'Known as the City of Love not just for its beauty, but because it is said that an angel watches over every couple who walks its walls at sunset.',
         coords: [41.6198, 45.9213],
         images: [
             'https://images.unsplash.com/photo-1596306499300-0b7b1689b9e6?fm=jpg&q=80&w=2000&auto=format&fit=crop',
@@ -505,6 +517,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expose startJourney globally for UI calls
     window.startJourney = startJourney;
 
+    // --- Progress Tracker Logic ---
+    let visitedSites = new Set();
+    const progressText = document.getElementById('progress-text');
+
+    const updateProgress = () => {
+        if (progressText) {
+            progressText.textContent = `${visitedSites.size}/${sites.length}`;
+        }
+        try {
+            localStorage.setItem('georgianGemsVisited', JSON.stringify([...visitedSites]));
+        } catch (e) { console.warn(e); }
+    };
+
+    try {
+        const stored = localStorage.getItem('georgianGemsVisited');
+        if (stored) {
+            visitedSites = new Set(JSON.parse(stored));
+            updateProgress();
+        }
+    } catch (e) { console.warn(e); }
+
     const centerMapOnSite = (site) => {
         const isMobile = window.innerWidth < 768;
         let targetZoom = 14; // Slightly closer zoom
@@ -531,6 +564,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Capture currently focused element to restore later
         lastFocusedElement = document.activeElement;
         activeMarker = marker;
+
+        // Update Progress
+        if (!visitedSites.has(site.id)) {
+            visitedSites.add(site.id);
+            updateProgress();
+
+            const tracker = document.getElementById('progress-tracker');
+            if (tracker) {
+                tracker.classList.add('pulse');
+                setTimeout(() => tracker.classList.remove('pulse'), 500);
+            }
+        }
 
         // Set dynamic accent color based on category
         const accentColor = site.category === 'Natural' ? '#2d6a4f' : '#9e1b21';
@@ -608,6 +653,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             highlightsContainer.appendChild(ul);
             textContainer.appendChild(highlightsContainer);
+        }
+
+        // Legend Section
+        if (site.legend) {
+            const legendBox = document.createElement('div');
+            legendBox.className = 'legend-box';
+            legendBox.innerHTML = `
+                <div class="legend-title">Echoes of the Past</div>
+                <div class="legend-text">"${site.legend}"</div>
+            `;
+            textContainer.appendChild(legendBox);
         }
 
         const p = document.createElement('p');
@@ -818,6 +874,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // Stagger marker creation
         setTimeout(() => {
             const marker = L.marker(site.coords, { icon: customIcon }).addTo(map);
+
+            // Add Rich Tooltip
+            const tooltipContent = `
+                <div class="custom-tooltip">
+                    <div class="tooltip-img" style="background-image: url('${thumbUrl}')"></div>
+                    <div class="tooltip-title">${safeName}</div>
+                </div>
+            `;
+
+            marker.bindTooltip(tooltipContent, {
+                direction: 'top',
+                offset: [0, -32],
+                className: 'glass-tooltip',
+                opacity: 1
+            });
+
             marker.site = site; // Attach site data to marker for reference
             markers.push(marker);
 
