@@ -1079,10 +1079,12 @@ document.addEventListener('DOMContentLoaded', () => {
     infoPanel.addEventListener('touchend', handleTouchEnd);
 
     // --- Filter Logic ---
-    const filterBtns = document.querySelectorAll('.filter-btn');
+    const filterBtns = document.querySelectorAll('.filter-btn[data-category]');
     const searchInput = document.getElementById('search-input');
 
     const filterSites = (category) => {
+        if (!category) return;
+
         // Clear search input and polyline
         if (searchInput) searchInput.value = '';
         if (currentPolyline) {
