@@ -1,28 +1,31 @@
 from playwright.sync_api import sync_playwright
 import time
+import os
 
 def verify_ux():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=True, executable_path=os.environ.get('CHROME_PATH','/usr/bin/google-chrome'), args=['--no-sandbox'])
         # Emulate a high-res mobile device for one test, and desktop for another
         # Let's do desktop first
         page = browser.new_page(viewport={'width': 1280, 'height': 800})
 
         # Navigate to the local server (assuming it's running on 3000)
-        page.goto("http://localhost:3000")
+        page.route('https://tile.openstreetmap.org/**',lambda route:route.abort())
+        page.emulate_media(reduced_motion='reduce')
+        page.goto(os.environ.get('BASE_URL','http://localhost:3000'))
 
         # 1. Intro Screen
         page.wait_for_selector("#intro-overlay")
         # Wait a bit for the slow zoom to start showing
         time.sleep(2)
-        page.screenshot(path="verification/1_intro.png")
+        page.screenshot(path="verification/current/1_intro.png")
         print("Screenshot 1: Intro captured.")
 
         # 2. Start Journey
         page.click("#start-btn")
         # Wait for cinematic fly-in
         time.sleep(3)
-        page.screenshot(path="verification/2_map_view.png")
+        page.screenshot(path="verification/current/2_map_view.png")
         print("Screenshot 2: Map view captured.")
 
         # 3. Click a marker
@@ -42,7 +45,7 @@ def verify_ux():
             # Wait for panel to open
             page.wait_for_selector("#info-panel.visible")
             time.sleep(1.5) # Wait for animations
-            page.screenshot(path="verification/3_info_panel.png")
+            page.screenshot(path="verification/current/3_info_panel.png")
             print("Screenshot 3: Info panel captured.")
 
         browser.close()

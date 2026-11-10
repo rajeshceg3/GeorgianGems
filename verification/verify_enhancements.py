@@ -1,11 +1,14 @@
 from playwright.sync_api import sync_playwright
 import time
+import os
 
 def verify_enhancements():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=True, executable_path=os.environ.get('CHROME_PATH','/usr/bin/google-chrome'), args=['--no-sandbox'])
         page = browser.new_page(viewport={'width': 1280, 'height': 800})
-        page.goto("http://localhost:3000")
+        page.route('https://tile.openstreetmap.org/**',lambda route:route.abort())
+        page.emulate_media(reduced_motion='reduce')
+        page.goto(os.environ.get('BASE_URL','http://localhost:3000'))
 
         print("1. Checking Progress Tracker...")
         # Check if tracker exists
