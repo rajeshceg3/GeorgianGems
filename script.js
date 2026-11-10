@@ -367,6 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         center: startCenter,
         zoom: startZoom,
         scrollWheelZoom: true,
+        zoomAnimation: false,
         zoomControl: false, // We'll add it manually to position it
         zoomSnap: 0.5 // Smoother zooming
     });
@@ -393,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPolyline = null;
 
     const markers = [];
-    const markerLayer=L.markerClusterGroup({maxClusterRadius:44,disableClusteringAtZoom:11,showCoverageOnHover:false,animate:!reducedMotion,spiderfyOnMaxZoom:true,iconCreateFunction:cluster=>L.divIcon({className:'site-cluster',html:`<span>${cluster.getChildCount()}</span>`,iconSize:[48,48],iconAnchor:[24,24]})}).addTo(map);
+    const markerLayer=L.markerClusterGroup({maxClusterRadius:44,disableClusteringAtZoom:11,showCoverageOnHover:false,animate:false,spiderfyOnMaxZoom:true,iconCreateFunction:cluster=>L.divIcon({className:'site-cluster',html:`<span>${cluster.getChildCount()}</span>`,iconSize:[48,48],iconAnchor:[24,24]})}).addTo(map);
 
     const flyToOffset = (latlng, zoom, offsetX, offsetY) => {
         const targetPoint = map.project(latlng, zoom).subtract([offsetX, offsetY]);
@@ -877,8 +878,8 @@ document.addEventListener('DOMContentLoaded', () => {
             popupAnchor: [0, -28]
         });
 
-        // Stagger marker creation
-        setTimeout(() => {
+        // Build the full searchable inventory before accepting input.
+        (() => {
             const marker = L.marker(site.coords, { icon: customIcon, keyboard:false });markerLayer.addLayer(marker);
 
             // Add Rich Tooltip
@@ -919,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
             };marker.on('add',bindPin);bindPin();
-        }, reducedMotion?0:index * 200); // 200ms stagger delay
+        })();
     });
 
     const closePanel = () => {
@@ -1091,6 +1092,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filterSites = (category) => {
         if (!category) return;
+        map.stop();
 
         // Clear search input and polyline
         if (searchInput) searchInput.value = '';
@@ -1130,9 +1132,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Close panel if the active marker is filtered out
+        map.stop();
+        const visible = markers.filter(marker => markerLayer.hasLayer(marker));
+        if (visible.length) map.fitBounds(L.latLngBounds(visible.map(marker => marker.getLatLng())), {padding:[56,100],maxZoom:10,animate:false});
+        // Keep the filtered results in view when dismissing an excluded detail.
         if (activeMarker && !markerLayer.hasLayer(activeMarker)) {
-            closePanel();
+            infoPanel.classList.remove('visible'); activeMarker=null;
         }
     };
 
@@ -1145,6 +1150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Search Logic ---
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
+            map.stop();
             const query = e.target.value.trim().toLowerCase();
 
             if (currentPolyline) {
@@ -1179,9 +1185,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // If active marker is filtered out, close panel
+            // Stop an entrance/close flight from leaving filtered results off-screen.
+            map.stop();
+            if (query) {
+                const visible = markers.filter(marker => markerLayer.hasLayer(marker));
+                if (visible.length) map.fitBounds(L.latLngBounds(visible.map(marker => marker.getLatLng())), {padding:[56,100],maxZoom:10,animate:false});
+            }
+            // If active marker is filtered out, close the detail without resetting search bounds.
             if (activeMarker && !markerLayer.hasLayer(activeMarker)) {
-                closePanel();
+                infoPanel.classList.remove('visible'); activeMarker=null;
             }
         });
     }
