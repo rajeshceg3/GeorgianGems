@@ -1,0 +1,170 @@
+[
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "#search-input",
+  "corePixels": 48,
+  "worstContrast": 15.349,
+  "pass": true
+ },
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "#journey-btn",
+  "corePixels": 149,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "#progress-text",
+  "corePixels": 57,
+  "worstContrast": 17.756,
+  "pass": true
+ },
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "[data-category=\"all\"]",
+  "corePixels": 75,
+  "worstContrast": 7.521,
+  "pass": true
+ },
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "[data-category=\"Cultural\"]",
+  "corePixels": 148,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "[data-category=\"Natural\"]",
+  "corePixels": 145,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 1440,
+  "ch": 0,
+  "selector": "[data-category=\"favorites\"]",
+  "corePixels": 161,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "#search-input",
+  "corePixels": 472,
+  "worstContrast": 15.349,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "#journey-btn",
+  "corePixels": 646,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "#progress-text",
+  "corePixels": 373,
+  "worstContrast": 17.042,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "[data-category=\"all\"]",
+  "corePixels": 247,
+  "worstContrast": 7.521,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "[data-category=\"Cultural\"]",
+  "corePixels": 613,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "[data-category=\"Natural\"]",
+  "corePixels": 588,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 320,
+  "ch": 0,
+  "selector": "[data-category=\"favorites\"]",
+  "corePixels": 677,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "#search-input",
+  "corePixels": 472,
+  "worstContrast": 15.349,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "#journey-btn",
+  "corePixels": 658,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "#progress-text",
+  "corePixels": 370,
+  "worstContrast": 17.042,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "[data-category=\"all\"]",
+  "corePixels": 247,
+  "worstContrast": 7.572,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "[data-category=\"Cultural\"]",
+  "corePixels": 593,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "[data-category=\"Natural\"]",
+  "corePixels": 580,
+  "worstContrast": 8.191,
+  "pass": true
+ },
+ {
+  "w": 390,
+  "ch": 0,
+  "selector": "[data-category=\"favorites\"]",
+  "corePixels": 675,
+  "worstContrast": 8.191,
+  "pass": true
+ }
+]

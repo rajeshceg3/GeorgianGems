@@ -362,10 +362,12 @@ document.addEventListener('DOMContentLoaded', () => {
              .replace(/'/g, "&#039;");
     };
 
+    const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const map = L.map('map', {
         center: startCenter,
         zoom: startZoom,
         scrollWheelZoom: true,
+        zoomAnimation: false,
         zoomControl: false, // We'll add it manually to position it
         zoomSnap: 0.5 // Smoother zooming
     });
@@ -375,11 +377,13 @@ document.addEventListener('DOMContentLoaded', () => {
         position: 'topright'
     }).addTo(map);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
+    const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19
     }).addTo(map);
+    const mapStatus=document.createElement('p');mapStatus.id='map-status';mapStatus.setAttribute('role','status');mapStatus.hidden=true;document.body.appendChild(mapStatus);
+    tiles.on('tileerror',()=>{mapStatus.textContent='Some map tiles could not load. Site details and search still work.';mapStatus.hidden=false;});
+    tiles.on('tileload',()=>{mapStatus.hidden=true;});
 
     const infoPanel = document.getElementById('info-panel');
     const infoContent = document.getElementById('info-content');
@@ -390,12 +394,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPolyline = null;
 
     const markers = [];
+    const markerLayer=L.markerClusterGroup({maxClusterRadius:44,disableClusteringAtZoom:11,showCoverageOnHover:false,animate:false,spiderfyOnMaxZoom:true,iconCreateFunction:cluster=>L.divIcon({className:'site-cluster',html:`<span>${cluster.getChildCount()}</span>`,iconSize:[48,48],iconAnchor:[24,24]})}).addTo(map);
 
     const flyToOffset = (latlng, zoom, offsetX, offsetY) => {
         const targetPoint = map.project(latlng, zoom).subtract([offsetX, offsetY]);
         const targetLatLng = map.unproject(targetPoint, zoom);
         map.flyTo(targetLatLng, zoom, {
-            animate: true,
+            animate: !reducedMotion,
             duration: 1.2,
             easeLinearity: 0.25
         });
@@ -443,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Favorites Logic ---
     const getFavorites = () => {
         try {
-            return JSON.parse(localStorage.getItem('georgianGemsFavorites') || '[]');
+            const saved=JSON.parse(localStorage.getItem('georgianGemsFavorites') || '[]');return Array.isArray(saved)?saved:[];
         } catch (e) {
             return [];
         }
@@ -457,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             favs.push(siteId);
         }
-        localStorage.setItem('georgianGemsFavorites', JSON.stringify(favs));
+        try{localStorage.setItem('georgianGemsFavorites', JSON.stringify(favs));}catch(e){mapStatus.textContent='Your browser could not save favorites. Allow site storage and try again.';mapStatus.hidden=false;return false;}
         return index === -1; // returns true if added, false if removed
     };
 
@@ -486,9 +491,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter markers
         markers.forEach(marker => {
             if (journeySiteIds.includes(marker.site.id)) {
-                if (!map.hasLayer(marker)) marker.addTo(map);
+                if (!markerLayer.hasLayer(marker)) markerLayer.addLayer(marker);
             } else {
-                if (map.hasLayer(marker)) map.removeLayer(marker);
+                if (markerLayer.hasLayer(marker)) markerLayer.removeLayer(marker);
             }
         });
 
@@ -597,15 +602,11 @@ document.addEventListener('DOMContentLoaded', () => {
         imageContainer.setAttribute('role', 'region');
         imageContainer.setAttribute('aria-label', 'Image Gallery');
 
-        site.images.forEach((url, idx) => {
-            const img = document.createElement('img');
-            img.src = getResizedImage(url, 800);
-            img.alt = `${site.name} - Image ${idx + 1}`;
-            img.loading = 'lazy';
-            img.className = 'gallery-item fade-in';
-            img.onerror = function() { this.style.display = 'none'; };
-            imageContainer.appendChild(img);
-        });
+        // Unverified stock photos are not evidence of a site's appearance.
+        imageContainer.className='place-banner';
+        imageContainer.removeAttribute('role');imageContainer.removeAttribute('aria-label');
+        imageContainer.textContent=site.region;
+
 
         const textContainer = document.createElement('div');
         textContainer.className = 'text-container';
@@ -627,7 +628,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return item;
         };
 
-        if (site.year) metaContainer.appendChild(createMetaItem('Year', site.year));
+        const worldHeritage=['mtskheta','svaneti','gelati','colchis'].includes(site.id);
+        if(worldHeritage){metaContainer.appendChild(createMetaItem('UNESCO World Heritage', `World Heritage · ${site.year}`));}
+        else{metaContainer.appendChild(createMetaItem('Guide place','Other heritage / landscape'));}
+        const source=document.createElement('a');source.href='https://whc.unesco.org/en/statesparties/ge';source.target='_blank';source.rel='noopener';source.textContent='Check UNESCO status';source.className='status-source';
+        metaContainer.appendChild(source);
         if (site.category) metaContainer.appendChild(createMetaItem('Category', site.category));
         if (site.region) metaContainer.appendChild(createMetaItem('Region', site.region));
 
@@ -682,12 +687,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (site.visitorInfo) {
-            if (site.visitorInfo.hours) infoGrid.appendChild(createInfoCard('Hours', site.visitorInfo.hours));
-            if (site.visitorInfo.cost) infoGrid.appendChild(createInfoCard('Cost', site.visitorInfo.cost));
+
+
         }
         if (site.bestTime) infoGrid.appendChild(createInfoCard('Best Time', site.bestTime));
 
         if (infoGrid.hasChildNodes()) textContainer.appendChild(infoGrid);
+        const accessNote=document.createElement('p');accessNote.className='access-note';accessNote.textContent='Planning notes are general, not live access information. Confirm opening, entry fees, road conditions and transport before travelling.';textContainer.appendChild(accessNote);
 
         // Travel Essentials (Logistics)
         if (site.logistics) {
@@ -709,9 +715,9 @@ document.addEventListener('DOMContentLoaded', () => {
                  return item;
             };
 
-            if (site.logistics.transport) grid.appendChild(createLogisticsItem('🚌', 'Transport', site.logistics.transport));
-            if (site.logistics.duration) grid.appendChild(createLogisticsItem('⏱', 'Duration', site.logistics.duration));
-            if (site.logistics.accessibility) grid.appendChild(createLogisticsItem('♿', 'Accessibility', site.logistics.accessibility));
+            if (site.logistics.transport) grid.appendChild(createLogisticsItem('', 'Transport', site.logistics.transport));
+            if (site.logistics.duration) grid.appendChild(createLogisticsItem('', 'Duration', site.logistics.duration));
+            if (site.logistics.accessibility) grid.appendChild(createLogisticsItem('', 'Accessibility', site.logistics.accessibility));
 
             logisticsContainer.appendChild(grid);
             textContainer.appendChild(logisticsContainer);
@@ -722,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (site.tips) {
             tipBox = document.createElement('div');
             tipBox.className = 'insider-tip';
-            tipBox.innerHTML = `<span class="tip-icon">✦</span><div class="tip-content"><strong>Insider Tip</strong><br>${site.tips}</div>`;
+            tipBox.innerHTML = `<div class="tip-content"><strong>Insider Tip</strong><br>${site.tips}</div>`;
             textContainer.appendChild(tipBox);
         }
 
@@ -744,12 +750,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isFav = getFavorites().includes(site.id);
         const favBtn = document.createElement('button');
         favBtn.className = `btn-action btn-secondary fav-btn`;
-        favBtn.innerHTML = isFav ? '♥ Saved' : '♡ Save to Favorites';
+        favBtn.innerHTML = isFav ? 'Saved' : 'Save to Favorites';
         if (isFav) favBtn.style.color = 'var(--color-accent)';
 
         favBtn.onclick = () => {
             const added = toggleFavorite(site.id);
-            favBtn.innerHTML = added ? '♥ Saved' : '♡ Save to Favorites';
+            favBtn.innerHTML = added ? 'Saved' : 'Save to Favorites';
             favBtn.style.color = added ? 'var(--color-accent)' : 'var(--color-text-primary)';
 
             // Refresh filter if in favorites view
@@ -803,10 +809,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.role = 'button';
                 card.tabIndex = 0;
 
-                const thumb = getResizedImage(ns.images[0], 200);
+
 
                 card.innerHTML = `
-                    <div class="nearby-img" style="background-image: url('${thumb}')"></div>
+
                     <div class="nearby-info">
                         <div class="nearby-title">${ns.name}</div>
                         <div class="nearby-dist">${Math.round(ns.distance)} km away</div>
@@ -839,6 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(textContainer);
 
         infoContent.appendChild(wrapper);
+        infoContent.scrollTop=0;
 
         infoPanel.classList.add('visible');
 
@@ -847,38 +854,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Handle marker selection state
         markers.forEach(m => {
-            const el = m.getElement();
+            const el = m.getElement();if(!el)return;
             el.classList.remove('selected');
             const pin = el.querySelector('.marker-pin');
             if (pin) pin.setAttribute('aria-expanded', 'false');
         });
-        marker.getElement().classList.add('selected');
-        const pin = marker.getElement().querySelector('.marker-pin');
+        marker.getElement()?.classList.add('selected');
+        const pin = marker.getElement()?.querySelector('.marker-pin');
         if (pin) pin.setAttribute('aria-expanded', 'true');
     };
 
     sites.forEach((site, index) => {
-        const thumbUrl = getResizedImage(site.images[0], 100);
+        const markerLabel=String(index+1);
         // Security: Escape HTML entities to prevent injection in aria-label
         const safeName = escapeHtml(site.name);
         const categoryClass = site.category ? site.category.toLowerCase() : '';
 
         const customIcon = L.divIcon({
             className: 'custom-marker',
-            html: `<div class='marker-pin ${categoryClass}' role='button' tabindex='0' aria-label='${safeName}' aria-expanded='false'><div class='marker-img' style='background-image: url("${thumbUrl}");'></div></div>`,
+            html: `<div class='marker-pin ${categoryClass}' role='button' tabindex='0' aria-label='${safeName}' aria-expanded='false'><span class='marker-number' aria-hidden='true'>${markerLabel}</span></div>`,
             iconSize: [48, 48],
             iconAnchor: [24, 24], // Center of the circular marker
             popupAnchor: [0, -28]
         });
 
-        // Stagger marker creation
-        setTimeout(() => {
-            const marker = L.marker(site.coords, { icon: customIcon }).addTo(map);
+        // Build the full searchable inventory before accepting input.
+        (() => {
+            const marker = L.marker(site.coords, { icon: customIcon, keyboard:false });markerLayer.addLayer(marker);
 
             // Add Rich Tooltip
             const tooltipContent = `
                 <div class="custom-tooltip">
-                    <div class="tooltip-img" style="background-image: url('${thumbUrl}')"></div>
+                    <span class="tooltip-number">${markerLabel}</span>
                     <div class="tooltip-title">${safeName}</div>
                 </div>
             `;
@@ -899,10 +906,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Add keyboard support (Enter/Space)
-            marker.on('add', () => {
-                const el = marker.getElement();
+            const bindPin=() => {
+                const el = marker.getElement();if(!el)return;
                 const pin = el.querySelector('.marker-pin');
-                if (pin) {
+                if (pin && !pin.dataset.keyBound) {
+                    pin.dataset.keyBound='true';
                     L.DomEvent.on(pin, 'keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault(); // Prevent scrolling for Space
@@ -911,8 +919,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
-            });
-        }, index * 200); // 200ms stagger delay
+            };marker.on('add',bindPin);bindPin();
+        })();
     });
 
     const closePanel = () => {
@@ -920,8 +928,8 @@ document.addEventListener('DOMContentLoaded', () => {
         activeMarker = null;
 
         markers.forEach(m => {
-            m.getElement().classList.remove('selected');
-            const pin = m.getElement().querySelector('.marker-pin');
+            m.getElement()?.classList.remove('selected');
+            const pin = m.getElement()?.querySelector('.marker-pin');
             if (pin) pin.setAttribute('aria-expanded', 'false');
         });
 
@@ -932,7 +940,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const isMobile = window.innerWidth < 768;
         const targetZoom = isMobile ? 6 : 7;
-        map.flyTo(initialCenter, targetZoom);
+        map.flyTo(initialCenter, targetZoom,{animate:!reducedMotion});
     };
 
     closeBtn.addEventListener('click', (e) => {
@@ -979,7 +987,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cinematic Fly-in
         const targetZoom = window.innerWidth < 768 ? 6 : 7;
         map.flyTo(initialCenter, targetZoom, {
-            animate: true,
+            animate: !reducedMotion,
             duration: 2.5,
             easeLinearity: 0.2
         });
@@ -995,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.innerWidth < 768;
         const targetZoom = isMobile ? 6 : 7;
         map.flyTo(initialCenter, targetZoom, {
-            animate: true,
+            animate: !reducedMotion,
             duration: 1.5
         });
     });
@@ -1084,6 +1092,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filterSites = (category) => {
         if (!category) return;
+        map.stop();
 
         // Clear search input and polyline
         if (searchInput) searchInput.value = '';
@@ -1113,19 +1122,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (visible) {
-                if (!map.hasLayer(marker)) {
-                    marker.addTo(map);
+                if (!markerLayer.hasLayer(marker)) {
+                    markerLayer.addLayer(marker);
                 }
             } else {
-                if (map.hasLayer(marker)) {
-                    map.removeLayer(marker);
+                if (markerLayer.hasLayer(marker)) {
+                    markerLayer.removeLayer(marker);
                 }
             }
         });
 
-        // Close panel if the active marker is filtered out
-        if (activeMarker && !map.hasLayer(activeMarker)) {
-            closePanel();
+        map.stop();
+        const visible = markers.filter(marker => markerLayer.hasLayer(marker));
+        if (visible.length) map.fitBounds(L.latLngBounds(visible.map(marker => marker.getLatLng())), {padding:[56,100],maxZoom:10,animate:false});
+        // Keep the filtered results in view when dismissing an excluded detail.
+        if (activeMarker && !markerLayer.hasLayer(activeMarker)) {
+            infoPanel.classList.remove('visible'); activeMarker=null;
         }
     };
 
@@ -1138,6 +1150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Search Logic ---
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
+            map.stop();
             const query = e.target.value.trim().toLowerCase();
 
             if (currentPolyline) {
@@ -1166,15 +1179,21 @@ document.addEventListener('DOMContentLoaded', () => {
                                 region.includes(query);
 
                 if (matches) {
-                    if (!map.hasLayer(marker)) marker.addTo(map);
+                    if (!markerLayer.hasLayer(marker)) markerLayer.addLayer(marker);
                 } else {
-                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                    if (markerLayer.hasLayer(marker)) markerLayer.removeLayer(marker);
                 }
             });
 
-            // If active marker is filtered out, close panel
-            if (activeMarker && !map.hasLayer(activeMarker)) {
-                closePanel();
+            // Stop an entrance/close flight from leaving filtered results off-screen.
+            map.stop();
+            if (query) {
+                const visible = markers.filter(marker => markerLayer.hasLayer(marker));
+                if (visible.length) map.fitBounds(L.latLngBounds(visible.map(marker => marker.getLatLng())), {padding:[56,100],maxZoom:10,animate:false});
+            }
+            // If active marker is filtered out, close the detail without resetting search bounds.
+            if (activeMarker && !markerLayer.hasLayer(activeMarker)) {
+                infoPanel.classList.remove('visible'); activeMarker=null;
             }
         });
     }
