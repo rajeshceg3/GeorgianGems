@@ -55,6 +55,14 @@
         </div>
     </div>
 
+    <!-- Ambient sound control: opt-in, muting closes the audio entirely -->
+    <button id="sound-btn" aria-pressed="false" aria-label="Sound on">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 5 6 9H2v6h4l5 4V5z"/>
+            <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+        </svg>
+    </button>
+
     <!-- Reset View Control -->
     <button id="reset-view-btn" aria-label="Reset Map View">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,6 +71,7 @@
         </svg>
     </button>
 
+    <script src="gem-sound.js"></script>
     <script src="vendor/leaflet/leaflet.js"></script>
     <script src="vendor/markercluster/leaflet.markercluster.js"></script>
     <script src="script.js"></script>

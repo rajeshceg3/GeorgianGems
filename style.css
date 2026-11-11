@@ -630,6 +630,35 @@ body::after {
 
 /* --- Reset View Control --- */
 
+#sound-btn {
+    position: absolute;
+    bottom: 100px;
+    right: 32px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    color: var(--color-text-primary);
+    transition: all 0.3s var(--ease-out-cubic);
+}
+
+#sound-btn[aria-pressed="true"] {
+    color: var(--color-accent);
+}
+
+#sound-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-accent);
+}
+
 #reset-view-btn {
     position: absolute;
     bottom: 32px;
