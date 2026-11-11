@@ -565,7 +565,41 @@ document.addEventListener('DOMContentLoaded', () => {
         flyToOffset(site.coords, targetZoom, offsetX, offsetY);
     };
 
+    // Ambient Caucasus sound: opt-in, synthesized, follows the open site.
+    const gemSound = (() => {
+        let scape = null;
+        let currentPlace = 0;
+        const placeIndex = (id) => {
+            const pid = (window.GemSound && (GemSound.GEM_SITE_PLACE[id] || 'map')) || 'map';
+            return Math.max(0, GemSound ? GemSound.GEM_PLACES.findIndex(p => p.id === pid) : 0);
+        };
+        return {
+            toggle() {
+                if (!window.GemSound) return false;
+                if (!scape) scape = GemSound.createSoundscape(GemSound.GEM_PLACES);
+                scape.toggle(currentPlace);
+                return scape.state.on;
+            },
+            setSite(id) {
+                currentPlace = placeIndex(id || 'map');
+                if (scape) scape.setPlace(currentPlace);
+            },
+            get on() { return !!(scape && scape.state.on); },
+            get ctx() { return scape ? scape.state.ctx : null; },
+        };
+    })();
+    window.gemSound = gemSound;
+    const soundBtn = document.getElementById('sound-btn');
+    if (soundBtn) {
+        soundBtn.addEventListener('click', () => {
+            const on = gemSound.toggle();
+            soundBtn.setAttribute('aria-pressed', '' + on);
+            soundBtn.setAttribute('aria-label', on ? 'Sound off' : 'Sound on');
+        });
+    }
+
     const activateMarker = (site, marker) => {
+        gemSound.setSite(site.id);
         // Capture currently focused element to restore later
         lastFocusedElement = document.activeElement;
         activeMarker = marker;
@@ -924,6 +958,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const closePanel = () => {
+        gemSound.setSite(null);
         infoPanel.classList.remove('visible');
         activeMarker = null;
 
