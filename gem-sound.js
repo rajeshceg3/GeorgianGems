@@ -471,13 +471,14 @@ const GEM_SITE_PLACE = {
 
 
 
-const BEDS = { surf: DSP.renderSurfLoop, wind: DSP.renderWindLoop };
+const BEDS = { surf: DSP.renderSurfLoop, wind: DSP.renderWindLoop, rustle: DSP.renderRustleLoop };
 const VOICES = {
   koel: DSP.renderKoel, gull: DSP.renderGull, putter: DSP.renderPutter,
   bell: DSP.renderBell, camelBells: DSP.renderCamelBells, rickshawBell: DSP.renderRickshawBell,
   dove: DSP.renderDove, kite: DSP.renderKite, nightjar: DSP.renderNightjar,
   cuckoo: DSP.renderCuckoo,
   coppersmith: DSP.renderCoppersmith,
+  drip: renderDrip,
 };
 
 function createSoundscape(SOUND_PLACES) {

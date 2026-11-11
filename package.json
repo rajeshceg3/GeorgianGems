@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "playwright test && node verification/audio-structure.cjs",
+    "test": "playwright test && node verification/audio-structure.cjs && node verification/audio-palette.cjs",
     "check": "node --check script.js"
   },
   "devDependencies": {
