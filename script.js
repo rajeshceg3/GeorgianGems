@@ -1269,3 +1269,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Quiet chrome: the map leads; controls visit when called and retire when left.
+(function () {
+  var PIN_KEY = 'georgiangems-chrome-pin', TOP_ZONE = 96, BOTTOM_ZONE = 150, RETIRE_MS = 2600;
+  var els = ['#filter-control', '#sound-btn', '#reset-view-btn'].map(function (s) { return document.querySelector(s); }).filter(Boolean);
+  var zoom = document.querySelector('.leaflet-control-zoom'); if (zoom) els.push(zoom);
+  els.forEach(function (e) { e.classList.add('chrome', 'chrome-on'); });
+  var hint = document.createElement('button');
+  hint.className = 'chrome-hint'; hint.hidden = true; hint.setAttribute('aria-label', 'Show controls');
+  hint.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 3h10l5 6-10 12L2 9zM2 9h20M7 3l5 18 5-18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+  document.body.appendChild(hint);
+  var pinBtn = document.createElement('button');
+  pinBtn.id = 'pin-controls'; pinBtn.type = 'button'; pinBtn.textContent = 'Pin'; pinBtn.title = 'Keep controls visible'; pinBtn.setAttribute('aria-pressed', 'false'); pinBtn.className = 'filter-btn';
+  var fc = document.querySelector('#filter-control'); if (fc) fc.appendChild(pinBtn);
+  var pinned = false; try { pinned = localStorage.getItem(PIN_KEY) === '1'; } catch (e) {}
+  var chrome = true, focusWithin = false, retireTimer = 0;
+  function apply() { var on = chrome || pinned; els.forEach(function (e) { e.classList.toggle('chrome-on', on); }); hint.hidden = on; }
+  function retireSoon() { clearTimeout(retireTimer); retireTimer = setTimeout(function () { if (!focusWithin) { chrome = false; apply(); } }, RETIRE_MS); }
+  function wake() { chrome = true; apply(); retireSoon(); }
+  document.addEventListener('pointermove', function (e) { if (e.pointerType === 'touch') return; if (e.clientY < TOP_ZONE || e.clientY > innerHeight - BOTTOM_ZONE) wake(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var p = document.querySelector('#info-panel'); if (p && p.classList.contains('visible')) return; focusWithin = false; chrome = false; apply(); } });
+  document.addEventListener('focusin', function (e) { if (els.some(function (x) { return x.contains(e.target); })) { focusWithin = true; clearTimeout(retireTimer); chrome = true; apply(); } });
+  document.addEventListener('focusout', function (e) { if (!els.some(function (x) { return x.contains(e.relatedTarget); })) { focusWithin = false; retireSoon(); } });
+  hint.addEventListener('click', wake);
+  function setPin(next) { pinned = next; try { next ? localStorage.setItem(PIN_KEY, '1') : localStorage.removeItem(PIN_KEY); } catch (e) {} pinBtn.setAttribute('aria-pressed', String(next)); pinBtn.textContent = next ? 'Unpin' : 'Pin'; pinBtn.title = next ? 'Let controls retire' : 'Keep controls visible'; if (next) { chrome = true; apply(); } else retireSoon(); }
+  pinBtn.addEventListener('click', function () { setPin(!pinned); });
+  if (pinned) setPin(true);
+  var startBtn = document.querySelector('#start-btn');
+  if (startBtn) startBtn.addEventListener('click', function () { retireSoon(); }); else retireSoon();
+})();
