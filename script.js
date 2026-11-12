@@ -366,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const map = L.map('map', {
         center: startCenter,
         zoom: startZoom,
+        maxZoom: 18,
         scrollWheelZoom: true,
         zoomAnimation: false,
         zoomControl: false, // We'll add it manually to position it
@@ -377,13 +378,12 @@ document.addEventListener('DOMContentLoaded', () => {
         position: 'topright'
     }).addTo(map);
 
-    const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
-    }).addTo(map);
+    maplibregl.setWorkerUrl('vendor/maplibre/maplibre-gl-csp-worker.js');
+    // Warm paper basemap (worlds shared module): OpenFreeMap vector tiles,
+    // custom watercolor-wash style. Free public instance, no API key.
+    L.maplibreGL({style: window.WARM_MAP_STYLE}).addTo(map);
+    map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> <a href="https://www.openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>');
     const mapStatus=document.createElement('p');mapStatus.id='map-status';mapStatus.setAttribute('role','status');mapStatus.hidden=true;document.body.appendChild(mapStatus);
-    tiles.on('tileerror',()=>{mapStatus.textContent='Some map tiles could not load. Site details and search still work.';mapStatus.hidden=false;});
-    tiles.on('tileload',()=>{mapStatus.hidden=true;});
 
     const infoPanel = document.getElementById('info-panel');
     const infoContent = document.getElementById('info-content');

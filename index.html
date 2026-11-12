@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' ; img-src 'self' data: https://tile.openstreetmap.org; font-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' ; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://tiles.openfreemap.org; worker-src 'self';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="theme-color" content="#f2f2f4">
     <title>Georgian Gems: Heritage and Landscapes</title>
     <link rel="stylesheet" href="vendor/leaflet/leaflet.css"/>
     <link rel="stylesheet" href="vendor/markercluster/MarkerCluster.css">
     <link rel="stylesheet" href="vendor/markercluster/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="vendor/maplibre/maplibre-gl.css"/>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -74,6 +75,9 @@
     <script src="gem-sound.js"></script>
     <script src="vendor/leaflet/leaflet.js"></script>
     <script src="vendor/markercluster/leaflet.markercluster.js"></script>
+    <script src="vendor/maplibre/maplibre-gl-csp.js"></script>
+    <script src="vendor/maplibre/leaflet-maplibre-gl.js"></script>
+    <script src="vendor/warm-map/style.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

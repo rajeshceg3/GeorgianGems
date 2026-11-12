@@ -2,13 +2,13 @@
   "config": {
     "argv": [
       "/usr/bin/node",
-      "/home/sandbox/fleet/GeorgianGems/node_modules/.bin/playwright",
+      "/tmp/repos/GeorgianGems/node_modules/.bin/playwright",
       "test",
-      "-g",
-      "390px reduce|quiet chrome"
+      "--grep",
+      "quiet chrome"
     ],
-    "configFile": "/home/sandbox/fleet/GeorgianGems/playwright.config.cjs",
-    "rootDir": "/home/sandbox/fleet/GeorgianGems/tests",
+    "configFile": "/tmp/repos/GeorgianGems/playwright.config.cjs",
+    "rootDir": "/tmp/repos/GeorgianGems/tests",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -24,7 +24,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/home/sandbox/fleet/GeorgianGems/test-results",
+        "outputDir": "/tmp/repos/GeorgianGems/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -32,7 +32,7 @@
         },
         "id": "",
         "name": "",
-        "testDir": "/home/sandbox/fleet/GeorgianGems/tests",
+        "testDir": "/tmp/repos/GeorgianGems/tests",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -44,15 +44,15 @@
       {
         "grep": {},
         "grepInvert": null,
-        "outputDir": "/home/sandbox/fleet/GeorgianGems/test-results",
+        "outputDir": "/tmp/repos/GeorgianGems/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
           "actualWorkers": 1
         },
         "name": "",
-        "testDir": "/home/sandbox/fleet/GeorgianGems/tests",
-        "snapshotDir": "/home/sandbox/fleet/GeorgianGems/tests",
+        "testDir": "/tmp/repos/GeorgianGems/tests",
+        "snapshotDir": "/tmp/repos/GeorgianGems/tests",
         "testIgnore": [],
         "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
         "timeout": 90000,
@@ -110,77 +110,6 @@
       "line": 0,
       "specs": [
         {
-          "title": "390px reduce map, twelve details and preserved guide functions",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "",
-              "projectName": "",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 4010,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m0\u001b[39m Historical Monuments of Mtskheta\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m1\u001b[39m Upper Svaneti\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m2\u001b[39m Gelati Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m3\u001b[39m Colchic Rainforests and Wetlands\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m4\u001b[39m Vardzia Cave Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m5\u001b[39m Uplistsikhe Cave Town\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m6\u001b[39m David Gareji Monasteries\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m7\u001b[39m Gergeti Trinity Church\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m8\u001b[39m Prometheus Cave\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m9\u001b[39m Martvili Canyon\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m10\u001b[39m Ananuri Fortress\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m11\u001b[39m Sighnaghi\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-12T07:23:48.105Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "514a4ac945cf639287c9-d4baaafe162742ade2d6",
-          "file": "map.spec.cjs",
-          "line": 3,
-          "column": 82
-        },
-        {
           "title": "quiet chrome retires and wakes",
           "ok": true,
           "tags": [],
@@ -196,12 +125,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4460,
+                  "duration": 4917,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-12T07:23:52.314Z",
+                  "startTime": "2026-11-12T09:36:56.129Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -219,9 +148,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-12T07:23:47.688Z",
-    "duration": 9167.704000000002,
-    "expected": 2,
+    "startTime": "2026-11-12T09:36:55.699Z",
+    "duration": 5621.321,
+    "expected": 1,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
