@@ -1436,3 +1436,34 @@ body::after {
 
 #info-panel{z-index:1100}
 @media(prefers-reduced-motion:reduce){#info-content,#info-content *, .intro-content,.intro-content *{opacity:1!important;transform:none!important}}
+
+.filter-control{position:absolute}
+/* Quiet chrome: the map leads; controls visit when called and retire when left. */
+.chrome{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease}
+.chrome.chrome-on{opacity:1;visibility:visible;pointer-events:auto}
+.chrome-hint[hidden]{display:none}
+.chrome-hint{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:1200;width:52px;height:40px;display:grid;place-items:center;background:#faf6ec;color:#1c1a17;border:2px solid #1c1a17;border-radius:14px 16px 13px 17px/16px 13px 17px 14px;box-shadow:3px 4px 0 rgba(28,26,23,.35);cursor:pointer;padding:6px}
+/* Hand-inked heritage tags: supra-table paper, wine-ink stamps */
+.filter-control{background:#faf6ec;border:2px solid #1c1a17;border-radius:16px 20px 17px 22px/20px 16px 22px 17px;box-shadow:3px 4px 0 rgba(28,26,23,.28);backdrop-filter:none}
+.filter-btn{border:1.8px solid #1c1a17;background:#faf6ec;color:#1c1a17;box-shadow:none}
+.filter-btn:nth-of-type(odd){border-radius:12px 16px 11px 15px/15px 11px 16px 12px}
+.filter-btn:nth-of-type(even){border-radius:15px 11px 16px 12px/11px 15px 12px 16px}
+.filter-btn::after{display:none}
+.filter-btn.active,.filter-btn[aria-pressed="true"]{background:#9e1b21;border-color:#9e1b21;color:#faf6ec;transform:translateY(-2px)}
+.filter-btn:active{transform:scale(.97)}
+#search-input{border:1.8px solid #1c1a17;background:#fffdf6;border-radius:12px 15px 12px 16px/16px 12px 15px 12px;color:#1c1a17}
+#search-input::placeholder{color:#7a746a}
+.journey-menu{background:#faf6ec;border:2px solid #1c1a17;border-radius:14px 17px 13px 18px/17px 13px 18px 14px;box-shadow:3px 4px 0 rgba(28,26,23,.28)}
+.journey-option{border:1.8px solid #1c1a17;background:#faf6ec;color:#1c1a17;border-radius:11px 14px 10px 13px/13px 10px 14px 11px;margin:4px}
+.journey-option:hover{background:#f0e8d4}
+.progress-tracker{border:1.8px dashed #9e1b21;border-radius:50% 46% 52% 48%/48% 52% 46% 50%;background:#faf6ec;color:#9e1b21}
+#sound-btn,#reset-view-btn{background:#faf6ec;color:#1c1a17;border:2px solid #1c1a17;border-radius:14px 17px 13px 18px/17px 13px 18px 14px;box-shadow:3px 4px 0 rgba(28,26,23,.3)}
+#sound-btn[aria-pressed="true"]{background:#9e1b21;color:#faf6ec;border-color:#9e1b21}
+.leaflet-control-zoom{border:2px solid #1c1a17!important;border-radius:12px 15px 12px 16px/16px 12px 15px 12px!important;box-shadow:3px 4px 0 rgba(28,26,23,.3)!important;overflow:hidden}
+.leaflet-control-zoom a{background:#faf6ec!important;color:#1c1a17!important;border:none!important}
+.filter-btn,.journey-option,#sound-btn,#reset-view-btn,.leaflet-control-zoom a,#search-input{transition:transform .18s cubic-bezier(0.23,1,0.32,1),background-color .18s ease,color .18s ease}
+@media (prefers-reduced-motion: reduce){.chrome,.filter-btn,.journey-option,#sound-btn,#reset-view-btn{transition:none}}
+
+/* Pin control: small stamped tag, visually secondary to the filters */
+#pin-controls{position:absolute;right:10px;bottom:-14px;min-height:0;padding:3px 9px;font-size:11px;font-weight:600;border-style:dashed;background:#faf6ec;color:#7a746a;border-radius:10px 12px 9px 13px/12px 9px 13px 10px;box-shadow:2px 3px 0 rgba(28,26,23,.25)}
+#pin-controls[aria-pressed="true"]{background:#1c1a17;color:#faf6ec;border-color:#1c1a17;transform:none}

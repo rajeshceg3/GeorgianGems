@@ -2,13 +2,13 @@
   "config": {
     "argv": [
       "/usr/bin/node",
-      "/home/sandbox/georgiangems/node_modules/.bin/playwright",
+      "/home/sandbox/fleet/GeorgianGems/node_modules/.bin/playwright",
       "test",
-      "--workers",
-      "6"
+      "-g",
+      "390px reduce|quiet chrome"
     ],
-    "configFile": "/home/sandbox/georgiangems/playwright.config.cjs",
-    "rootDir": "/home/sandbox/georgiangems/tests",
+    "configFile": "/home/sandbox/fleet/GeorgianGems/playwright.config.cjs",
+    "rootDir": "/home/sandbox/fleet/GeorgianGems/tests",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -24,7 +24,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/home/sandbox/georgiangems/test-results",
+        "outputDir": "/home/sandbox/fleet/GeorgianGems/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -32,7 +32,7 @@
         },
         "id": "",
         "name": "",
-        "testDir": "/home/sandbox/georgiangems/tests",
+        "testDir": "/home/sandbox/fleet/GeorgianGems/tests",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -44,15 +44,15 @@
       {
         "grep": {},
         "grepInvert": null,
-        "outputDir": "/home/sandbox/georgiangems/test-results",
+        "outputDir": "/home/sandbox/fleet/GeorgianGems/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
           "actualWorkers": 1
         },
         "name": "",
-        "testDir": "/home/sandbox/georgiangems/tests",
-        "snapshotDir": "/home/sandbox/georgiangems/tests",
+        "testDir": "/home/sandbox/fleet/GeorgianGems/tests",
+        "snapshotDir": "/home/sandbox/fleet/GeorgianGems/tests",
         "testIgnore": [],
         "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
         "timeout": 90000,
@@ -95,7 +95,7 @@
     "updateSnapshots": "default",
     "updateSourceMethod": "patch",
     "version": "1.65.0",
-    "workers": 6,
+    "workers": 1,
     "webServer": {
       "command": "python3 -m http.server 8797 --bind 127.0.0.1",
       "port": 8797,
@@ -109,77 +109,6 @@
       "column": 0,
       "line": 0,
       "specs": [
-        {
-          "title": "320px reduce map, twelve details and preserved guide functions",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "",
-              "projectName": "",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 3951,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m0\u001b[39m Historical Monuments of Mtskheta\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m1\u001b[39m Upper Svaneti\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m2\u001b[39m Gelati Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m3\u001b[39m Colchic Rainforests and Wetlands\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m4\u001b[39m Vardzia Cave Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m5\u001b[39m Uplistsikhe Cave Town\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m6\u001b[39m David Gareji Monasteries\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m7\u001b[39m Gergeti Trinity Church\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m8\u001b[39m Prometheus Cave\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m9\u001b[39m Martvili Canyon\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m10\u001b[39m Ananuri Fortress\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m11\u001b[39m Sighnaghi\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-10T22:35:41.085Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "514a4ac945cf639287c9-39af3b4b674607364adf",
-          "file": "map.spec.cjs",
-          "line": 3,
-          "column": 82
-        },
         {
           "title": "390px reduce map, twelve details and preserved guide functions",
           "ok": true,
@@ -196,7 +125,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4392,
+                  "duration": 4010,
                   "errors": [],
                   "stdout": [
                     {
@@ -238,7 +167,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-10T22:35:45.258Z",
+                  "startTime": "2026-11-12T07:23:48.105Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -252,7 +181,7 @@
           "column": 82
         },
         {
-          "title": "1440px reduce map, twelve details and preserved guide functions",
+          "title": "quiet chrome retires and wakes",
           "ok": true,
           "tags": [],
           "tests": [
@@ -267,49 +196,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5524,
+                  "duration": 4460,
                   "errors": [],
-                  "stdout": [
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m0\u001b[39m Historical Monuments of Mtskheta\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m1\u001b[39m Upper Svaneti\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m2\u001b[39m Gelati Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m3\u001b[39m Colchic Rainforests and Wetlands\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m4\u001b[39m Vardzia Cave Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m5\u001b[39m Uplistsikhe Cave Town\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m6\u001b[39m David Gareji Monasteries\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m7\u001b[39m Gergeti Trinity Church\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m8\u001b[39m Prometheus Cave\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m9\u001b[39m Martvili Canyon\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m10\u001b[39m Ananuri Fortress\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m11\u001b[39m Sighnaghi\n"
-                    }
-                  ],
+                  "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-11-10T22:35:49.664Z",
+                  "startTime": "2026-11-12T07:23:52.314Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -317,232 +209,19 @@
               "status": "expected"
             }
           ],
-          "id": "514a4ac945cf639287c9-f680563144fb6879f2aa",
+          "id": "514a4ac945cf639287c9-19f1c5224b91878aafe3",
           "file": "map.spec.cjs",
-          "line": 3,
-          "column": 82
-        },
-        {
-          "title": "320px no-preference map, twelve details and preserved guide functions",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "",
-              "projectName": "",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 19535,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m0\u001b[39m Historical Monuments of Mtskheta\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m1\u001b[39m Upper Svaneti\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m2\u001b[39m Gelati Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m3\u001b[39m Colchic Rainforests and Wetlands\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m4\u001b[39m Vardzia Cave Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m5\u001b[39m Uplistsikhe Cave Town\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m6\u001b[39m David Gareji Monasteries\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m7\u001b[39m Gergeti Trinity Church\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m8\u001b[39m Prometheus Cave\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m9\u001b[39m Martvili Canyon\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m10\u001b[39m Ananuri Fortress\n"
-                    },
-                    {
-                      "text": "\u001b[33m320\u001b[39m \u001b[33m11\u001b[39m Sighnaghi\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-10T22:35:55.200Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "514a4ac945cf639287c9-c196bac8295c429d33c7",
-          "file": "map.spec.cjs",
-          "line": 3,
-          "column": 82
-        },
-        {
-          "title": "390px no-preference map, twelve details and preserved guide functions",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "",
-              "projectName": "",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 20139,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m0\u001b[39m Historical Monuments of Mtskheta\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m1\u001b[39m Upper Svaneti\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m2\u001b[39m Gelati Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m3\u001b[39m Colchic Rainforests and Wetlands\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m4\u001b[39m Vardzia Cave Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m5\u001b[39m Uplistsikhe Cave Town\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m6\u001b[39m David Gareji Monasteries\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m7\u001b[39m Gergeti Trinity Church\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m8\u001b[39m Prometheus Cave\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m9\u001b[39m Martvili Canyon\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m10\u001b[39m Ananuri Fortress\n"
-                    },
-                    {
-                      "text": "\u001b[33m390\u001b[39m \u001b[33m11\u001b[39m Sighnaghi\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-10T22:36:14.749Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "514a4ac945cf639287c9-3e3da1fa5b4b947e02d5",
-          "file": "map.spec.cjs",
-          "line": 3,
-          "column": 82
-        },
-        {
-          "title": "1440px no-preference map, twelve details and preserved guide functions",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "",
-              "projectName": "",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 22139,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m0\u001b[39m Historical Monuments of Mtskheta\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m1\u001b[39m Upper Svaneti\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m2\u001b[39m Gelati Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m3\u001b[39m Colchic Rainforests and Wetlands\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m4\u001b[39m Vardzia Cave Monastery\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m5\u001b[39m Uplistsikhe Cave Town\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m6\u001b[39m David Gareji Monasteries\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m7\u001b[39m Gergeti Trinity Church\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m8\u001b[39m Prometheus Cave\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m9\u001b[39m Martvili Canyon\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m10\u001b[39m Ananuri Fortress\n"
-                    },
-                    {
-                      "text": "\u001b[33m1440\u001b[39m \u001b[33m11\u001b[39m Sighnaghi\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-11-10T22:36:34.912Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "514a4ac945cf639287c9-34f9e59bd678c9599f81",
-          "file": "map.spec.cjs",
-          "line": 3,
-          "column": 82
+          "line": 28,
+          "column": 1
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-10T22:35:40.660Z",
-    "duration": 76475.63500000001,
-    "expected": 6,
+    "startTime": "2026-11-12T07:23:47.688Z",
+    "duration": 9167.704000000002,
+    "expected": 2,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
