@@ -12,10 +12,11 @@
     <link rel="stylesheet" href="vendor/markercluster/MarkerCluster.Default.css">
     <link rel="stylesheet" href="vendor/maplibre/maplibre-gl.css"/>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="controls.css">
 </head>
 <body>
     <div id="map" tabindex="-1"></div>
-    <div id="info-panel" class="hidden" tabindex="-1">
+    <div id="info-panel" class="hidden" role="dialog" aria-label="Place details" tabindex="-1" hidden inert>
         <div class="sheet-handle"></div>
         <button id="close-btn" aria-label="Close details">&times;</button>
         <div id="info-content">
@@ -25,7 +26,10 @@
 
     <!-- Cinematic Intro Overlay -->
     <!-- Filter Controls -->
-    <div id="filter-control" class="filter-control">
+    <button id="explore-toggle" aria-expanded="false" aria-controls="filter-control" hidden>Explore <span aria-hidden="true">◇</span></button>
+    <section id="filter-control" class="filter-control" aria-label="Explore Georgia" hidden inert>
+        <header class="explore-header"><h2>Explore Georgia</h2><button id="explore-close" aria-label="Close Explore">×</button></header>
+        <label for="search-input">Find a place</label>
         <div id="search-container">
             <input type="text" id="search-input" placeholder="Search..." aria-label="Search sites">
         </div>
@@ -33,9 +37,8 @@
         <button class="filter-btn" data-category="Cultural" aria-pressed="false">Cultural</button>
         <button class="filter-btn" data-category="Natural" aria-pressed="false">Natural</button>
         <button class="filter-btn" data-category="favorites" aria-pressed="false">Favorites</button>
-        <div class="journey-wrapper">
-            <button id="journey-btn" type="button" class="filter-btn" aria-haspopup="true" aria-expanded="false">Journeys</button>
-            <div id="journey-menu" class="journey-menu" aria-hidden="true">
+        <div class="journey-wrapper"><h3>Journeys</h3>
+            <div id="journey-menu" class="journey-menu">
                 <button type="button" class="journey-option" data-journey="royal_path">The Royal Path</button>
                 <button type="button" class="journey-option" data-journey="wild_horizons">Wild Horizons</button>
             </div>
@@ -44,7 +47,8 @@
             <svg class="progress-icon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l5 6-10 12L2 9zM2 9h20M7 3l5 18 5-18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
             <span id="progress-text">0/12</span>
         </div>
-    </div>
+        <div id="map-tools" aria-label="Map tools"></div>
+    </section>
 
     <!-- Cinematic Intro Overlay -->
     <div id="intro-overlay" class="intro-overlay" aria-hidden="false">
@@ -79,5 +83,6 @@
     <script src="vendor/maplibre/leaflet-maplibre-gl.js"></script>
     <script src="vendor/warm-map/style.js"></script>
     <script src="script.js"></script>
+    <script src="controls.js"></script>
 </body>
 </html>

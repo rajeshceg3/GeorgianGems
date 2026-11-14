@@ -881,10 +881,13 @@ document.addEventListener('DOMContentLoaded', () => {
         infoContent.appendChild(wrapper);
         infoContent.scrollTop=0;
 
+        infoPanel.hidden = false; infoPanel.inert = false;
+        document.dispatchEvent(new Event('close-explore'));
         infoPanel.classList.add('visible');
 
         // Move focus to the panel for accessibility
-        infoPanel.focus();
+        infoPanel.focus({preventScroll:true});
+        infoContent.scrollTop=0;
 
         // Handle marker selection state
         markers.forEach(m => {
@@ -960,6 +963,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePanel = () => {
         gemSound.setSite(null);
         infoPanel.classList.remove('visible');
+        infoPanel.hidden = true; infoPanel.inert = true;
         activeMarker = null;
 
         markers.forEach(m => {
@@ -977,6 +981,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetZoom = isMobile ? 6 : 7;
         map.flyTo(initialCenter, targetZoom,{animate:!reducedMotion});
     };
+
+    document.addEventListener('close-place', () => { if(infoPanel.classList.contains('visible')) closePanel(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape' && infoPanel.classList.contains('visible')) {e.preventDefault();e.stopImmediatePropagation();closePanel();} });
 
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent map click
@@ -1172,7 +1179,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visible.length) map.fitBounds(L.latLngBounds(visible.map(marker => marker.getLatLng())), {padding:[56,100],maxZoom:10,animate:false});
         // Keep the filtered results in view when dismissing an excluded detail.
         if (activeMarker && !markerLayer.hasLayer(activeMarker)) {
-            infoPanel.classList.remove('visible'); activeMarker=null;
+            infoPanel.classList.remove('visible');
+        infoPanel.hidden = true; infoPanel.inert = true; activeMarker=null;
         }
     };
 
@@ -1228,74 +1236,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // If active marker is filtered out, close the detail without resetting search bounds.
             if (activeMarker && !markerLayer.hasLayer(activeMarker)) {
-                infoPanel.classList.remove('visible'); activeMarker=null;
+                infoPanel.classList.remove('visible');
+        infoPanel.hidden = true; infoPanel.inert = true; activeMarker=null;
             }
         });
     }
 
-    // --- Journey Menu Logic ---
-    const journeyBtn = document.getElementById('journey-btn');
-    const journeyMenu = document.getElementById('journey-menu');
-    const journeyOptions = document.querySelectorAll('.journey-option');
-
-    if (journeyBtn && journeyMenu) {
-        journeyBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isExpanded = journeyBtn.getAttribute('aria-expanded') === 'true';
-            journeyBtn.setAttribute('aria-expanded', !isExpanded);
-            journeyMenu.classList.toggle('visible');
-            journeyMenu.setAttribute('aria-hidden', isExpanded);
-        });
-
-        // Close menu on click outside
-        document.addEventListener('click', (e) => {
-            if (!journeyBtn.contains(e.target) && !journeyMenu.contains(e.target)) {
-                journeyBtn.setAttribute('aria-expanded', 'false');
-                journeyMenu.classList.remove('visible');
-                journeyMenu.setAttribute('aria-hidden', 'true');
-            }
-        });
-
-        journeyOptions.forEach(opt => {
-            opt.addEventListener('click', () => {
-                const journeyId = opt.dataset.journey;
-                startJourney(journeyId);
-
-                // Close menu
-                journeyBtn.setAttribute('aria-expanded', 'false');
-                journeyMenu.classList.remove('visible');
-                journeyMenu.setAttribute('aria-hidden', 'true');
-            });
-        });
-    }
+    document.querySelectorAll('.journey-option').forEach(opt => {
+        opt.addEventListener('click', () => startJourney(opt.dataset.journey));
+    });
 });
-
-// Quiet chrome: the map leads; controls visit when called and retire when left.
-(function () {
-  var PIN_KEY = 'georgiangems-chrome-pin', TOP_ZONE = 96, BOTTOM_ZONE = 150, RETIRE_MS = 2600;
-  var els = ['#filter-control', '#sound-btn', '#reset-view-btn'].map(function (s) { return document.querySelector(s); }).filter(Boolean);
-  var zoom = document.querySelector('.leaflet-control-zoom'); if (zoom) els.push(zoom);
-  els.forEach(function (e) { e.classList.add('chrome', 'chrome-on'); });
-  var hint = document.createElement('button');
-  hint.className = 'chrome-hint'; hint.hidden = true; hint.setAttribute('aria-label', 'Show controls');
-  hint.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 3h10l5 6-10 12L2 9zM2 9h20M7 3l5 18 5-18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
-  document.body.appendChild(hint);
-  var pinBtn = document.createElement('button');
-  pinBtn.id = 'pin-controls'; pinBtn.type = 'button'; pinBtn.textContent = 'Pin'; pinBtn.title = 'Keep controls visible'; pinBtn.setAttribute('aria-pressed', 'false'); pinBtn.className = 'filter-btn';
-  var fc = document.querySelector('#filter-control'); if (fc) fc.appendChild(pinBtn);
-  var pinned = false; try { pinned = localStorage.getItem(PIN_KEY) === '1'; } catch (e) {}
-  var chrome = true, focusWithin = false, retireTimer = 0;
-  function apply() { var on = chrome || pinned; els.forEach(function (e) { e.classList.toggle('chrome-on', on); }); hint.hidden = on; }
-  function retireSoon() { clearTimeout(retireTimer); retireTimer = setTimeout(function () { if (!focusWithin) { chrome = false; apply(); } }, RETIRE_MS); }
-  function wake() { chrome = true; apply(); retireSoon(); }
-  document.addEventListener('pointermove', function (e) { if (e.pointerType === 'touch') return; if (e.clientY < TOP_ZONE || e.clientY > innerHeight - BOTTOM_ZONE) wake(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var p = document.querySelector('#info-panel'); if (p && p.classList.contains('visible')) return; focusWithin = false; chrome = false; apply(); } });
-  document.addEventListener('focusin', function (e) { if (els.some(function (x) { return x.contains(e.target); })) { focusWithin = true; clearTimeout(retireTimer); chrome = true; apply(); } });
-  document.addEventListener('focusout', function (e) { if (!els.some(function (x) { return x.contains(e.relatedTarget); })) { focusWithin = false; retireSoon(); } });
-  hint.addEventListener('click', wake);
-  function setPin(next) { pinned = next; try { next ? localStorage.setItem(PIN_KEY, '1') : localStorage.removeItem(PIN_KEY); } catch (e) {} pinBtn.setAttribute('aria-pressed', String(next)); pinBtn.textContent = next ? 'Unpin' : 'Pin'; pinBtn.title = next ? 'Let controls retire' : 'Keep controls visible'; if (next) { chrome = true; apply(); } else retireSoon(); }
-  pinBtn.addEventListener('click', function () { setPin(!pinned); });
-  if (pinned) setPin(true);
-  var startBtn = document.querySelector('#start-btn');
-  if (startBtn) startBtn.addEventListener('click', function () { retireSoon(); }); else retireSoon();
-})();
