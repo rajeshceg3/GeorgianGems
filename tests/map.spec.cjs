@@ -1,14 +1,14 @@
 const {test,expect}=require('@playwright/test');
 const places=['Historical Monuments of Mtskheta','Upper Svaneti','Gelati Monastery','Colchic Rainforests and Wetlands','Vardzia Cave Monastery','Uplistsikhe Cave Town','David Gareji Monasteries','Gergeti Trinity Church','Prometheus Cave','Martvili Canyon','Ananuri Fortress','Sighnaghi'];
-for(const motion of ['reduce','no-preference'])for(const width of [320,390,1440])test(`${width}px ${motion} map, twelve details and preserved guide functions`,async({page})=>{
+for(const motion of ['reduce','no-preference'])for(const width of [320,390,1280,1440])test(`${width}px ${motion} map, twelve details and preserved guide functions`,async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.route('https://tile.openstreetmap.org/**',r=>r.fulfill({contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6pL8AAAAASUVORK5CYII=','base64')}));
- await page.setViewportSize({width,height:844});await page.emulateMedia({reducedMotion:motion});await page.addInitScript(()=>{try{localStorage.setItem('georgiangems-chrome-pin','1')}catch{}});await page.goto('/');await page.click('#start-btn');await expect(page.locator('#intro-overlay')).toHaveAttribute('aria-hidden','true');
+ await page.setViewportSize({width,height:844});await page.emulateMedia({reducedMotion:motion});await page.addInitScript(()=>{try{localStorage.setItem('georgiangems-chrome-pin','1')}catch{}});await page.goto('/');await page.click('#start-btn');await page.click('#explore-toggle');await expect(page.locator('#intro-overlay')).toHaveAttribute('aria-hidden','true');
  await expect(page.locator('#progress-tracker svg')).toBeVisible();await expect(page.locator('.site-cluster').first()).toBeVisible();
- for(const s of ['#search-input','#journey-btn','#progress-tracker','[data-category="all"]','[data-category="Cultural"]','[data-category="Natural"]','[data-category="favorites"]']){const r=await page.locator(s).boundingBox();expect(r.x).toBeGreaterThanOrEqual(0);expect(r.x+r.width).toBeLessThanOrEqual(width+.1);}
+ for(const s of ['#search-input','.journey-wrapper','#progress-tracker','[data-category="all"]','[data-category="Cultural"]','[data-category="Natural"]','[data-category="favorites"]']){const r=await page.locator(s).boundingBox();expect(r.x).toBeGreaterThanOrEqual(0);expect(r.x+r.width).toBeLessThanOrEqual(width+.1);}
  await page.screenshot({path:`verification/current/${width}-map.png`});
  for(let i=0;i<places.length;i++){
-  console.log(width,i,places[i]);await page.fill('#search-input',places[i]);const pin=page.getByRole('button',{name:places[i],exact:true});await expect(pin).toBeVisible();await pin.press('Enter');await expect(page.locator('#info-panel')).toHaveClass(/visible/);await expect(page.locator('#info-content h2')).toHaveText(places[i]);await expect(page.locator('#info-content h2')).toHaveCSS('opacity','1');
+  console.log(width,i,places[i]);if(await page.locator('#filter-control').isHidden())await page.click('#explore-toggle');await page.fill('#search-input',places[i]);const pin=page.getByRole('button',{name:places[i],exact:true});await expect(pin).toBeVisible();await pin.press('Enter');await expect(page.locator('#info-panel')).toHaveClass(/visible/);await expect(page.locator('#info-content h2')).toHaveText(places[i]);await expect(page.locator('#info-content h2')).toHaveCSS('opacity','1');await expect(page.locator('#info-content h2')).toHaveCSS('animation-name','none');await expect(page.locator('#info-content h2')).toHaveCSS('filter','none');
   await expect(page.locator('#info-content img,.nearby-img')).toHaveCount(0);await expect(page.locator('.info-label')).not.toContainText(['Hours']);await expect(page.locator('#info-content')).not.toContainText('GEL');
   await expect(page.locator('.status-source')).toHaveAttribute('href','https://whc.unesco.org/en/statesparties/ge');
   await expect.poll(()=>page.locator('#info-content').evaluate(el=>el.scrollTop)).toBe(0);
@@ -16,26 +16,19 @@ for(const motion of ['reduce','no-preference'])for(const width of [320,390,1440]
   if(i===0){await page.locator('.fav-btn').click();await expect(page.locator('.fav-btn')).toHaveText('Saved');}
   await page.click('#close-btn');await expect(page.locator('#info-panel')).not.toHaveClass(/visible/);
  }
- await page.fill('#search-input','');await page.click('[data-category="favorites"]');await expect(page.locator('.marker-pin')).toHaveCount(1);
- await page.reload();await page.click('#start-btn');await page.click('[data-category="favorites"]');await expect(page.locator('.marker-pin')).toHaveCount(1);
+ await page.click('#explore-toggle');await page.fill('#search-input','');await page.click('[data-category="favorites"]');await expect(page.locator('.marker-pin')).toHaveCount(1);
+ await page.reload();await page.click('#start-btn');await page.click('#explore-toggle');await page.click('[data-category="favorites"]');await expect(page.locator('.marker-pin')).toHaveCount(1);
  await page.click('[data-category="Natural"]');await expect(page.locator('[data-category="Natural"]')).toHaveAttribute('aria-pressed','true');
  await page.click('[data-category="Cultural"]');await expect(page.locator('[data-category="Cultural"]')).toHaveAttribute('aria-pressed','true');
- for(const id of ['royal_path','wild_horizons']){await page.click('#journey-btn');await expect(page.locator('#journey-menu')).toHaveClass(/visible/);await page.click(`[data-journey="${id}"]`);await expect(page.locator('.journey-line')).toHaveCount(1);}
+ for(const id of ['royal_path','wild_horizons']){await expect(page.locator('#journey-menu')).toBeVisible();await page.click(`[data-journey="${id}"]`);await expect(page.locator('.journey-line')).toHaveCount(1);}
  await page.click('#reset-view-btn');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
 });
 
-const { test: qtest, expect: qexpect } = require('@playwright/test');
-qtest('quiet chrome retires and wakes', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await page.click('#start-btn');
-  await page.waitForTimeout(3400);
-  await qexpect(page.locator('#filter-control')).toBeHidden();
-  await qexpect(page.locator('.chrome-hint')).toBeVisible();
-  await page.locator('.chrome-hint').dispatchEvent('click');
-  await qexpect(page.locator('#filter-control')).toBeVisible();
-  await qexpect(page.locator('.chrome-hint')).toBeHidden();
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(600);
-  await qexpect(page.locator('#filter-control')).toBeHidden();
+test('Explore is explicit, stays open, closes and returns focus', async ({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto('/');await page.click('#start-btn');
+ await expect(page.locator('#filter-control')).toBeHidden();await page.click('#explore-toggle');
+ await page.waitForTimeout(3400);await expect(page.locator('#filter-control')).toBeVisible();
+ await expect(page.locator('#pin-controls,.chrome-hint,#journey-btn')).toHaveCount(0);
+ await page.keyboard.press('Escape');await expect(page.locator('#filter-control')).toBeHidden();
+ await expect(page.locator('#explore-toggle')).toBeFocused();
 });

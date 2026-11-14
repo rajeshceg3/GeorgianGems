@@ -1,0 +1,32 @@
+[hidden]{display:none!important}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #9e1b21;outline-offset:3px}
+#explore-toggle{position:fixed;top:14px;left:14px;z-index:1200;min-height:44px;padding:10px 18px;display:flex;align-items:center;gap:24px;background:#faf6ec;color:#1c1a17;border:2px solid #1c1a17;border-radius:12px 16px 11px 15px/15px 11px 16px 12px;box-shadow:3px 4px 0 #1c1a1745;font:600 15px var(--font-primary);cursor:pointer}
+#filter-control{position:fixed;top:72px;left:14px;right:auto;transform:none;width:370px;max-width:calc(100% - 28px);max-height:calc(100dvh - 112px);box-sizing:border-box;overflow:auto;display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 16px;transition:none;z-index:1300}
+.explore-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;width:calc(100% + 32px);margin:0 -16px 4px;padding:8px 12px 8px 16px;flex-shrink:0;box-sizing:border-box;background:#faf6ec;border-bottom:1px solid #d9d1c0}
+.explore-header h2{font-size:19px;margin:0;color:#7a1519}
+#explore-close{width:44px;height:44px;border:1px solid #1c1a17;background:transparent;border-radius:12px;color:#1c1a17;font-size:24px;cursor:pointer}
+#filter-control>label,#search-container{flex-basis:100%;width:100%;margin:0;order:0}
+#filter-control>label{font-size:14px;font-weight:600}
+#search-input,#search-input:focus{width:100%;min-width:0;padding:10px;font-size:16px}
+#filter-control>.filter-btn{flex:1 0 40%;padding:10px 6px;order:0;transform:none}
+.journey-wrapper{width:100%;order:0}.journey-wrapper h3{font-size:14px;margin:12px 0 6px}
+#journey-menu{position:static;display:grid;grid-template-columns:1fr;opacity:1;visibility:visible;pointer-events:auto;transform:none;max-width:none;min-width:0;border:0;box-shadow:none;padding:0;background:none;backdrop-filter:none}
+.journey-option{min-height:44px;margin:3px 0;padding:10px;text-align:left;font-size:14px}
+#progress-tracker{order:0;min-height:44px;justify-content:center;gap:8px;width:100%;border-radius:12px;margin:8px 0 0;box-sizing:border-box}
+#map-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;width:100%;margin-top:8px}
+#map-tools .leaflet-control-zoom{position:static;margin:0!important;display:flex;float:none;gap:0;clear:none}
+#map-tools .leaflet-control-zoom a{width:44px;height:44px;line-height:44px}
+#map-tools #sound-btn,#map-tools #reset-view-btn{position:static;transform:none;width:44px;height:44px;margin:0;flex:none}
+#info-panel{top:72px;left:14px;right:auto;bottom:40px;width:440px;max-width:calc(100% - 28px);height:auto;max-height:calc(100dvh - 112px);padding:0;transform:none;transition:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-sizing:border-box;border-radius:16px;will-change:auto}
+#info-panel.visible{transform:none}
+.sheet-handle{display:none}
+#close-btn{top:10px;right:10px;transform:none;transition:none;background:#faf6ec;border:1px solid #1c1a17;backdrop-filter:none}
+#close-btn:hover{transform:none}
+#info-content{opacity:1;transform:none;transition:none}
+#info-content h2{overflow-wrap:anywhere}
+.leaflet-control-attribution{max-width:calc(100vw - 12px);box-sizing:border-box;font-size:10px!important}
+#map-tools button,#map-tools a{touch-action:manipulation}
+/* Place reading is immediate; keep map/marker and sound behavior untouched. */
+#info-content *{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important}
+#info-content h2{font-size:32px;line-height:1.15;margin-bottom:18px}
+#journey-menu .journey-option{width:100%;box-sizing:border-box}
